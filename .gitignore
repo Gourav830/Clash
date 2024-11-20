@@ -2,3 +2,14 @@
 node_modules
 server/node_modules
 frontend/node_modules
+server/dist
+frontend/dist
+server/.env
+frontend/.env
+server/prisma/.env
+server/prisma/.env.development
+server/prisma/.env.production
+server/prisma/.env.test
+server/prisma/migrations
+server/prisma/schema.prisma
+server/prisma/client

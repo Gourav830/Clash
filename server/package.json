@@ -8,8 +8,10 @@
     "start": "node ./dist/index.js",
     "server": "nodemon ./dist/index.js",
     "watch": "tsc -w",
-    "build": "tsc",
-    "dev": "concurrently \"npm run watch\" \"npm run server\""
+    "build": "tsc && npm run copy-files",
+    "dev": "concurrently  \"npm run watch\"  \"npm run server\" \"npm run watch-views\"",
+    "copy-files": "copyfiles -u 1 \"src/views/**/*\" dist/",
+    "watch-views": "nodemon --watch src/views -e ejs -x \"npm run copy-files\""
   },
   "keywords": [],
   "author": "",
@@ -20,13 +22,16 @@
     "concurrently": "^9.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "nodemailer": "^6.9.16",
     "prisma": "^5.22.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.3"
   }
