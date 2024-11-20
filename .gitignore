@@ -1,4 +1,3 @@
-
 node_modules
 server/node_modules
 frontend/node_modules
@@ -18,3 +17,4 @@ frontend/dist
 env
 server/.env
 frontend/.env
+doclerCMD.txt
