@@ -1,4 +1,3 @@
-
 node_modules
 server/node_modules
 frontend/node_modules
@@ -13,3 +12,9 @@ server/prisma/.env.test
 server/prisma/migrations
 server/prisma/schema.prisma
 server/prisma/client
+server/dist
+frontend/dist
+env
+server/.env
+frontend/.env
+doclerCMD.txt
