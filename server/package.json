@@ -5,14 +5,18 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-      
-
+    "start": "node ./dist/index.js",
+    "server": "nodemon ./dist/index.js",
+    "watch": "tsc -w",
+    "build": "tsc",
+    "dev": "concurrently \"npm run watch\" \"npm run server\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/concurrently": "^7.0.3",
+    "concurrently": "^9.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1"
