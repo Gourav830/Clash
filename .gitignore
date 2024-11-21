@@ -14,7 +14,9 @@ server/prisma/schema.prisma
 server/prisma/client
 server/dist
 frontend/dist
-env
+.env
 server/.env
+server/env
 frontend/.env
+frontend/env
 doclerCMD.txt

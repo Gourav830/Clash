@@ -32,6 +32,7 @@ router.post("/register", async (req: Request, res: Response) => {
     
       //Token
       const token = await bcrypt.hash(uuid4(),salt)
+      // await prisma.user.update({where:{email:payload.email},data:{email_verified_token:token}})
       const url = `${process.env.APP_URL}/verify-email?email=${payload.email}&token=${token}`
       const emailBody = await renderEmailEjs("verify-email",{name:payload.name,url:url})
     // Send Email
@@ -46,7 +47,8 @@ router.post("/register", async (req: Request, res: Response) => {
         data:{
           name:payload.name,
           email:payload.email,
-          password:payload.password
+          password:payload.password,
+          email_verified_token:token
         }
       })
       return res.json({message:"Check your email to verify your account"})
