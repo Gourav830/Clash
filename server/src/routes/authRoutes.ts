@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { registerSchema } from "../validations/authValidations.js";
+import { loginSchema, registerSchema } from "../validations/authValidations.js";
 import { ZodError } from "zod";
 import { formatEror, renderEmailEjs } from "../helper.js";
 import prisma from "../config/database.js";
@@ -7,7 +7,8 @@ import bcrypt from "bcrypt";
 import {v4 as uuid4} from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/emailJobs.js";
 const router = Router();
-
+import jwt  from "jsonwebtoken";
+import { name } from "ejs";
 //REgister Route
 
 router.post("/register", async (req: Request, res: Response) => {
@@ -66,5 +67,45 @@ router.post("/register", async (req: Request, res: Response) => {
    return res.status(500).json({message:"Something went wrong . Please try again later",error});
   }
 });
+//login Route 
 
+router.post("/login", async (req: Request, res: Response) => {
+  try {
+    const body = req.body
+    const payload = loginSchema.parse(body)
+    console.log(payload);
+    const user = await prisma.user.findUnique({where:{email:payload.email}})
+    if( user===null || !user){
+      return res.status(422).json({errors :{email:"Invalid  credentials"}})
+    }
+    const isMatch = await bcrypt.compare(payload.password,user.password)
+    if(!isMatch){
+      return res.status(422).json({errors :{email:"Invalid  credentials"}})
+    }
+
+      let JWT_payload = {
+        id:user.id,
+        name:user.name,
+        email:user.email
+      }
+
+      const token = jwt.sign(JWT_payload,process.env.JWT_SECRET_KEY!,{expiresIn:"365d"})
+      
+      return res.json({
+        message:"Login Success",
+        data:{
+          ...JWT_payload,
+          token:`bearer ${token}`
+        }
+      })
+
+
+
+
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({errors:"Something went wrong . Please try again later",error});
+  }
+});
 export default router;
