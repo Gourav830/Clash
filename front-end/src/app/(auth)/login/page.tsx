@@ -1,4 +1,5 @@
 
+import SubmitBtn from '@/components/common/submitBtn';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,7 +28,7 @@ const Page = () => {
                     </div>
 
                     <div className='mt-4'>
-                        <Button className='w-full'>Submit</Button>
+                        <SubmitBtn />
                     </div>
                 </form>
                     <p className='text-center mt-2'> Don't have an account? <Link href='/register'>Register</Link></p>

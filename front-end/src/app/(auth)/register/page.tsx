@@ -1,4 +1,6 @@
 
+import { registerAction } from '@/actions/authActions';
+import SubmitBtn from '@/components/common/submitBtn';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +17,7 @@ const Page = () => {
             <h1 className='text-3xl font-bold '> Register </h1>
             <p>Welcome To Clash App</p>
 
-                <form action="">
+                <form action={registerAction}>
                     <div className='mt-4'>
                         <Label htmlFor='Name' >Name</Label>
                         <Input id='Name' name='name' placeholder='Enter Your name' type='text'/>
@@ -36,7 +38,7 @@ const Page = () => {
                     </div>
 
                     <div className='mt-4'>
-                        <Button className='w-full'>Submit</Button>
+                        <SubmitBtn />
                     </div>
                 </form>
                     <p className='text-center mt-2'> Already have an account? <Link href='/login'>Login</Link></p>
