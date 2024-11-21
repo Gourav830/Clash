@@ -20,7 +20,7 @@ router.get("/verify-email", async (req: Request, res: Response) => {
         data: { email_verified_at:new Date().toISOString(), email_verified_token: null },
       });
 
-      res.redirect(`${process.env.CLIENT_APP_URL}/login`);
+     return res.redirect(`${process.env.CLIENT_APP_URL}/login`);
     }
   }
 

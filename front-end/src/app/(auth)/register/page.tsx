@@ -1,9 +1,7 @@
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import Register from '@/components/auth/register';
+import React,{useEffect} from 'react';
 import Link from 'next/link';
-import React from 'react';
 
 const Page = () => {
     return (
@@ -15,30 +13,7 @@ const Page = () => {
             <h1 className='text-3xl font-bold '> Register </h1>
             <p>Welcome To Clash App</p>
 
-                <form action="">
-                    <div className='mt-4'>
-                        <Label htmlFor='Name' >Name</Label>
-                        <Input id='Name' name='name' placeholder='Enter Your name' type='text'/>
-                    </div>
-                    <div className='mt-4'>
-                        <Label htmlFor='email' >Email</Label>
-                        <Input id='email' name='email' placeholder='Enter Your Email' type='email' />
-                    </div>
-                    <div className='mt-4'>
-                        <Label htmlFor='Password' >Password</Label>
-                        <Input id='Password' name='password' placeholder='Enter Your Password' type='password' />
-                  
-                    </div>
-                    <div className='mt-4'>
-                        <Label htmlFor='ConfirmPassword' >ConfirmPassword</Label>
-                        <Input id='ConfirmPassword' name='confirmpassword' placeholder='Confirm  Your Password' type='password' />
-          
-                    </div>
-
-                    <div className='mt-4'>
-                        <Button className='w-full'>Submit</Button>
-                    </div>
-                </form>
+              <Register/>
                     <p className='text-center mt-2'> Already have an account? <Link href='/login'>Login</Link></p>
             
             </div>
