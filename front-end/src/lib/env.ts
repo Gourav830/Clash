@@ -3,3 +3,4 @@ class ENV{
     static APP_URL:string = process.env.APP as string;
 
 }
+export default ENV;

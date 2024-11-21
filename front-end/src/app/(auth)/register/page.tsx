@@ -1,7 +1,7 @@
 
 import Register from '@/components/auth/register';
+import React,{useEffect} from 'react';
 import Link from 'next/link';
-import React from 'react';
 
 const Page = () => {
     return (
