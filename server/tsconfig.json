@@ -8,6 +8,7 @@
         "moduleResolution": "node16",
         "esModuleInterop": true,
         "types": ["node"],
+        "strict": true,
  
  
     },
