@@ -1,39 +1,35 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
+import { AuthUser } from "../custom-types.d.js";
 
 
-const authMiddleWare = (req: Request, res: Response, next: NextFunction) => {
-   const authHeader = req.header("Authorization");
-    if (!authHeader || !authHeader ===null || !authHeader === undefined) {
-         return res.status(401).json({ errors: { token: "No token, authorization denied" } });      
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.header("Authorization");
+
+  if (!authHeader) {
+    return res
+      .status(401)
+      .json({ errors: { token: "No token, authorization denied" } });
+  }
+
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return res
+      .status(401)
+      .json({ errors: { token: "No token, authorization denied" } });
+  }
+
+  // Verify token
+  jwt.verify(token, process.env.JWT_SECRET_KEY!, (err, user) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ errors: { token: "Token is not valid" } });
     }
 
-   const token = authHeader.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({ errors :  { token: "No token, authorization denied" } });
-    }
+    req.user = user as AuthUser;
+    next();
+  });
+};
 
-   //verify token
-   jwt.verify{token, process.env.JWT_SECRET_KEY!, (err, user) => {
-        if (err) {
-            return res.status(401).json({ errors: { token: "
-                Token is not valid" } });
-                req.user
-
-   }}
-   
-    // const token = req.header("x-auth-token");
-    // if (!token) {
-    //     return res.status(401).json({ errors: { token
-    //         : "No token, authorization denied" } });
-    // }
-    // try {
-    //     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!);
-    //     req.user = decoded;
-    //     next();
-    // } catch (error) {
-    //     res.status(401).json({ errors
-    //         : { token: "Token is not
-    //         valid" } });
-    // }
-}
+export default authMiddleware;

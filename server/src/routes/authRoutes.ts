@@ -8,7 +8,7 @@ import {v4 as uuid4} from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/emailJobs.js";
 const router = Router();
 import jwt  from "jsonwebtoken";
-import { name } from "ejs";
+import authMiddleware from "../middleware/AuthMiddleWare.js";
 //REgister Route
 
 router.post("/register", async (req: Request, res: Response) => {
@@ -108,4 +108,11 @@ router.post("/login", async (req: Request, res: Response) => {
     return res.status(500).json({errors:"Something went wrong . Please try again later",error});
   }
 });
+
+
+router.get("/user",authMiddleware,async (req: Request, res: Response) => {
+  const user = req.user
+  return res.json({data:user})
+
+} ) 
 export default router;
