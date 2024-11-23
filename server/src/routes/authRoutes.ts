@@ -8,6 +8,7 @@ import { v4 as uuid4 } from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/emailJobs.js";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middleware/authMiddleWare.js";
+import { authLimiter } from "../config/rateLinit.js";
 
 const router = Router();
 
@@ -23,7 +24,7 @@ declare module "express-serve-static-core" {
 }
 
 // Register Route
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register",authLimiter, async (req: Request, res: Response) => {
   try {
     const body = req.body;
     const payload = registerSchema.parse(body);
@@ -81,7 +82,7 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // Login Route
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login",authLimiter, async (req: Request, res: Response) => {
   try {
     const body = req.body;
     const payload = loginSchema.parse(body);
@@ -129,7 +130,7 @@ router.post("/login", async (req: Request, res: Response) => {
 });
 
 // Check Credentials Route
-router.post("/logincheck", async (req: any, res: Response) => {
+router.post("/logincheck", authLimiter,async (req: any, res: Response) => {
   try {
     const body = req.body;
     const payload = loginSchema.parse(body);

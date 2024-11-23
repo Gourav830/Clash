@@ -26,7 +26,7 @@ export default function Login() {
         email: state.data?.email,
         password: state.data?.password,
         redirect: true,
-        callbackUrl: "/",
+        callbackUrl: "/dashboard",
       });
     }
   }, [state]);
