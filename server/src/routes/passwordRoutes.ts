@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
-import { formatEror, renderEmailEjs } from "../helper.js";
+import { checkDateHourDifference, formatEror, renderEmailEjs } from "../helper.js";
 import { ForgertPasswordSchema, passwordResetSchema } from "../validations/passwordvalidation.js";
 import bcrypt from 'bcrypt';
 import {v4 as uuid4} from 'uuid';
@@ -63,9 +63,15 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
             const user = await prisma.user.findUnique({where:{email:payload.email}})
             if(!user || user==null)  {
                 return res.status(422).json({message:"Email not found",errors:{
-                    email:"Email not found"
+                    email:"Check link again"
                 }})
             } 
+if(user.passwordResetToken !==payload.token){
+    return res.status(422).json({message:"link",errors:{
+        email:"Check link again"
+    }})
+}
+
             const salt = await bcrypt.genSalt(10);
             const hashedToken = await bcrypt.hash(payload.token, salt);
             if(hashedToken !== user.passwordResetToken){
@@ -73,7 +79,15 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
                     token:"Invalid token"
                 }})
             }
-            const newSalt = await bcrypt.genSalt(10);
+
+const hoursDiff = checkDateHourDifference(user.token_send_at!);
+if(hoursDiff>2){
+    return res.status(422).json({message:"Token expired",errors
+    :{emails:{message:"Token expired"}}})
+    }
+
+
+          const newSalt = await bcrypt.genSalt(10);
             const newPassword = await bcrypt.hash(payload.password, newSalt);
             await prisma.user.update({
                 data:{
@@ -85,6 +99,17 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
                     email:payload.email
                 }
             })
+
+                return res.json({message:"Password has been reset"});
+
+
+
+
+
+
+
+
+
             return res.json({message:"Password has been reset"});
         } catch (error) {
             if (error instanceof ZodError ) {
