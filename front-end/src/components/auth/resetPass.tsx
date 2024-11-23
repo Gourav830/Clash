@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState, useEffect } from "react";
+import React, { use, useActionState, useEffect } from "react";
 
 import {  resetPasswordAction } from "@/actions/authActions";
 import SubmitBtn from "@/components/common/submitBtn";
@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 // import { useFormState } from 'react-dom';
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams,useRouter } from "next/navigation";
+import router from '../../../../server/src/routes/passwordRoutes';
 const ResetPass = () => {
   const initalState = {
     status: 0,
@@ -16,6 +17,7 @@ const ResetPass = () => {
   };
   const [state, formAction] = useActionState(resetPasswordAction, initalState);
   const sParams = useSearchParams();
+  const router = useRouter();
   useEffect(() => {
     if (state.status === 500) {
       toast.error(state.message);
@@ -23,6 +25,10 @@ const ResetPass = () => {
       toast.error(state.message);
     } else if (state.status === 200) {
       toast.success(state.message);
+
+      setTimeout(() => {
+        router.replace("/login");
+      }, 1000);
     }
   }, [state]);
 
