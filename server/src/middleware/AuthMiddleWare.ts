@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import { AuthUser } from "../custom-types.d.js";
-
+import { AuthUser } from "..";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.header("Authorization");
@@ -22,9 +21,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Verify token
   jwt.verify(token, process.env.JWT_SECRET_KEY!, (err, user) => {
     if (err) {
-      return res
-        .status(401)
-        .json({ errors: { token: "Token is not valid" } });
+      return res.status(401).json({ errors: { token: "Token is not valid" } });
     }
 
     req.user = user as AuthUser;

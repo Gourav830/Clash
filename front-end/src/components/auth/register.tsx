@@ -1,10 +1,10 @@
 'use client'
-import React,{useEffect} from 'react';
+import React,{useActionState, useEffect} from 'react';
 
-import { registerAction } from '@/actions/authActions';
+import {  registerAction } from '@/actions/authActions';
 import SubmitBtn from '@/components/common/submitBtn';
 import { Input } from '@/components/ui/input';
-import { useFormState } from 'react-dom';
+// import { useFormState } from 'react-dom';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 const Register = () => {
@@ -13,7 +13,7 @@ const Register = () => {
         message:"",
         errors:{},
     }
-    const [state,formAction] = useFormState(registerAction,initalState);
+    const [state,formAction] = useActionState(registerAction,initalState);
 
     useEffect(() => {
         if(state.status === 500){

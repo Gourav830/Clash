@@ -1,9 +1,7 @@
-
+'use client'
 import React from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import SubmitBtn from '@/components/common/submitBtn';
+import Login from '@/components/auth/login';
 
 const Page = () => {
     return (
@@ -14,22 +12,8 @@ const Page = () => {
         </h1>
             <h1 className='text-3xl font-bold '> Login </h1>
             <p>Welcome Back</p>
-
-                <form action="">
-                    <div className='mt-4'>
-                        <Label htmlFor='email' >Email</Label>
-                        <Input id='email' name='email' placeholder='Enter Your Email' type='email' />
-                    </div>
-                    <div className='mt-4'>
-                        <Label htmlFor='Password' >Password</Label>
-                        <Input id='Password' name='password' placeholder='Enter Your Password' type='password' />
-                  <div className="text-right font-bold">  <Link href="forget-password text-right"> Forgot Password?</Link></div>
-                    </div>
-
-                    <div className='mt-4'>
-                        <SubmitBtn />
-                    </div>
-                </form>
+            <Login/>
+               
                     <p className='text-center mt-2'> Don't have an account? <Link href='/register'>Register</Link></p>
             
             </div>
