@@ -1,7 +1,8 @@
 "use server";
 
-import {check_credential , REGISTER_URL } from "@/lib/apiEndPoint";
+import {check_credential , forgetPassword, REGISTER_URL } from "@/lib/apiEndPoint";
 import axios, { AxiosError } from "axios";
+import { resetPassword } from '../lib/apiEndPoint';
 export async function registerAction(prevState: any, formdata: FormData) {
   console.log("the form data is ", formdata);
   try {
@@ -32,6 +33,39 @@ export async function registerAction(prevState: any, formdata: FormData) {
       status: 500,
       message: "something went wrong. Try again",
       errors: {},
+    };
+  }
+}
+export async function forgetAction(prevState: any, formData: FormData) {
+  console.log("the form data is ", formData);
+  try {
+    const data = await axios.post(forgetPassword, {
+      email: formData.get("email"),
+    });
+    console.log(data);
+    return {
+      status: 200,
+      message: "Credentials matched loging you shortly!",
+      errors: {},
+   
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 422) {
+        return {
+          status: 422,
+          message: error.response.data.message,
+          errors: error.response.data.errors,
+
+        };
+      }
+    }
+
+    return {
+      status: 500,
+      message: "something went wrong. Try again",
+      errors: {},
+
     };
   }
 }
@@ -69,6 +103,41 @@ export async function loginAction(prevState: any, formData: FormData) {
       message: "something went wrong. Try again",
       errors: {},
       data: {},
+    };
+  }
+}
+
+
+export async function resetPasswordAction(prevState: any, formdata: FormData) {
+  console.log("the form data is ", formdata);
+  try {
+    const data = await axios.post(resetPassword, {
+           email: formdata.get("email"),
+      password: formdata.get("password"),
+      confirm_password: formdata.get("confirmpassword"),
+      token: formdata.get("token"),
+    });
+    return {
+      status: 200,
+      message:
+        "Reset password successful ",
+      errors: {},
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 422) {
+        return {
+          status: 422,
+          message: error.response.data.message,
+          errors: error.response.data.errors,
+        };
+      }
+    }
+
+    return {
+      status: 500,
+      message: "something went wrong. Try again",
+      errors: {},
     };
   }
 }
