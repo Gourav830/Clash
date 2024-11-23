@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useActionState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
@@ -7,7 +6,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { loginAction } from "@/actions/authActions";
 import SubmitBtn from "../common/submitBtn";
-import {signIn} from "next-auth/react";
+import { signIn } from "next-auth/react";
 export default function Login() {
   const initialState = {
     message: "",
@@ -18,7 +17,7 @@ export default function Login() {
   const [state, formAction] = useActionState(loginAction, initialState);
 
   useEffect(() => {
-    // console.log(state.issues);
+    console.log(state);
     if (state.status === 500) {
       toast.error(state.message);
     } else if (state.status === 200) {
@@ -27,7 +26,7 @@ export default function Login() {
         email: state.data?.email,
         password: state.data?.password,
         redirect: true,
-        callbackUrl: "/dashboard"
+        callbackUrl: "/",
       });
     }
   }, [state]);

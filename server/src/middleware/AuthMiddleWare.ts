@@ -1,28 +1,17 @@
 import jwt from "jsonwebtoken";
-import { NextFunction, Request, Response } from "express";
-import { AuthUser } from "..";
+import { Request, Response, NextFunction } from "express";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.header("Authorization");
-
-  if (!authHeader) {
-    return res
-      .status(401)
-      .json({ errors: { token: "No token, authorization denied" } });
+const authMiddleware = (req: any, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader === null || authHeader === undefined) {
+    return res.status(401).json({ status: 401, message: "UnAuthorized" });
   }
-
   const token = authHeader.split(" ")[1];
-  if (!token) {
-    return res
-      .status(401)
-      .json({ errors: { token: "No token, authorization denied" } });
-  }
 
-  // Verify token
-  jwt.verify(token, process.env.JWT_SECRET_KEY!, (err, user) => {
-    if (err) {
-      return res.status(401).json({ errors: { token: "Token is not valid" } });
-    }
+  //   * Verify the JWT token
+  jwt.verify(token, process.env.JWT_SECRET_KEY!, (err:any, user:any) => {
+    if (err)
+      return res.status(401).json({ status: 401, message: "UnAuthorized" });
 
     req.user = user as AuthUser;
     next();

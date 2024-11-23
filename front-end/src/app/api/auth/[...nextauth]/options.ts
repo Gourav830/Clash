@@ -1,24 +1,23 @@
-import { AuthOptions, ISODateString } from "next-auth"
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { AuthOptions, ISODateString,User } from "next-auth"
+import Credentials from 'next-auth/providers/credentials';
 import { JWT } from "next-auth/jwt";
 import { LOGIN_URL } from "@/lib/apiEndPoint";
 import axios from "axios";
 
 // interface JWT {
-//     user?: Customuser;
-//   }
+    // user?: Customuser;
+  // }
   
 
 export type customSession = {
     user?:Customuser;
-
     expires:ISODateString
 }
 export type Customuser = {
     id?:string | null;
-    name?:string;
-    email?:string;
-    token?:string;
+    name?:string|null;
+    email?:string | null;
+    token?:string | null;
 }   
 
 export const authOptions:AuthOptions = {
@@ -33,8 +32,8 @@ export const authOptions:AuthOptions = {
             return session
    
         },
-        async jwt({token, user}:{token:JWT, user:Customuser | null}) {
-          console.log("JWT TOKEN IS : ",token,user);
+        async jwt({token, user}:{token:JWT, user:Customuser}) {
+          console.log("JWT TOKEN IS : ",token);
             if(user){
                  token.user = user
            
@@ -43,7 +42,7 @@ export const authOptions:AuthOptions = {
         }
     },
    providers: [
-      CredentialsProvider ({
+      Credentials ({
         name: "Credentials",
    
         credentials: {
