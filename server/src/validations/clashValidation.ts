@@ -14,5 +14,6 @@ export const clashSchema = z.object({
     }),
   expires_at: z
     .string({ message: "Enter Expiry Date" })
-    .min(5, { message: "Enter valid Date" }),  
-});                           
+    .min(5, { message: "Enter valid Date" }),
+    image: z.string().optional()
+});
