@@ -26,7 +26,7 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
   try {
     const body = req.body;
     const payload = clashSchema.parse(body);
-    console.log(payload);
+    // console.log(payload);
     if (req.files?.image) {
       const image: UploadedFile = req.files?.image as UploadedFile;
 
@@ -35,7 +35,7 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
       if (validMsg) {
         return res
           .status(422)
-          .json({ message: "Invalid data", errors: { image: validMsg } });
+          .json({errors: { image: validMsg } });
       }
 
       payload.image = await uploadedFile(image);
@@ -45,10 +45,11 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
     }
     await prisma.clash.create({
       data: {
-        ...payload,
+        title: payload.title,
+        description: payload?.description,
+        image: payload?.image,
         user_id: req.user?.id!,
         expires_at: new Date(payload.expires_at),
-        image: payload.image!,
       },
     });
     return res.json({ message: "Clash created successfully" });

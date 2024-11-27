@@ -54,7 +54,7 @@ export const uploadedFile =async (image:UploadedFile)=>{
   const imageExt = image?.name.split('.')
 
   const imageName =uuid4() + '.' + imageExt[imageExt.length - 1]
-const uploadPath = process.cwd() + '/public/uploads/' + imageName
+const uploadPath = process.cwd() + '/public/images/' + imageName
 image.mv(uploadPath,(err)=>{
   if(err) throw err
 })
@@ -62,7 +62,7 @@ return imageName
 
 }
 export const deleteImage = (fileName:string)=>{
-const path = process.cwd() + '/public/uploads/' + fileName
+const path = process.cwd() + '/public/images/' + fileName
 if(fs.existsSync(path)){
   fs.unlinkSync(path)
 }

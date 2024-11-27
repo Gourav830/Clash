@@ -7,7 +7,7 @@ import authMiddleware from '../middleware/authMiddleWare.js';
 const router = Router();
 
 router.use('/', verifyRoutes);
-router.use('/api/clash',authMiddleware, clashRoutes);
+router.use('/api/clash', clashRoutes);
 router.use('/api/auth', authRoutes);
 router.use('/api/auth', passwordRoutes);
 export default router;

@@ -1,6 +1,6 @@
 type ClashFormType = {
-    title?:string;
-    description?:string;
+    title?: string;
+    description?: string;
 }
 type ClashFormTypeError = {
     title?:string;

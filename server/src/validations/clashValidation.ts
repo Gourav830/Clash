@@ -7,7 +7,7 @@ export const clashSchema = z.object({
       message: "Title must be at most 100 characters long",
     }),
   description: z
-    .string({ message: "description is required" })
+    .string({ message: "Description is required" })
     .min(3, { message: "description must be at least 9 characters long" })
     .max(2000, {
       message: "description must be at most 2000 characters long",

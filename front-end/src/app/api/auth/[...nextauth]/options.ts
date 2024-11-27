@@ -27,13 +27,13 @@ export const authOptions:AuthOptions = {
     },
     callbacks:{
         async session({session,token,user}:{session:customSession,token:JWT,user:Customuser}) {
-          console.log("Session token is : ",user , session, token);  
+          // console.log("Session token is : ",user , session, token);  
           session.user = token.user as Customuser
             return session
    
         },
         async jwt({token, user}:{token:JWT, user:Customuser}) {
-          console.log("JWT TOKEN IS : ",token);
+          // console.log("JWT TOKEN IS : ",token);
             if(user){
                  token.user = user
            
