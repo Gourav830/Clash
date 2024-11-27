@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
 import Routes from "./routes/index.js";
+import fileUpload from "express-fileupload";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Application = express();
