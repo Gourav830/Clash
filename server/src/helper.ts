@@ -2,6 +2,7 @@ import { date, ZodError, ZodIssue } from "zod";
 import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from 'fs'
 import { getParentKey } from "bullmq";
 import moment from "moment";
 import { mineTypes } from "./config/fileSystem.js";
@@ -59,4 +60,10 @@ image.mv(uploadPath,(err)=>{
 })
 return imageName
 
+}
+export const deleteImage = (fileName:string)=>{
+const path = process.cwd() + '/public/uploads/' + fileName
+if(fs.existsSync(path)){
+  fs.unlinkSync(path)
+}
 }

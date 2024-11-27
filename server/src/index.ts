@@ -21,7 +21,7 @@ app.set("views", path.resolve(__dirname, "views"));
 app.use(Routes);
 
 
-
+app.use(express.static ("public"));
 app.get("/", async (req: Request, res: Response) => {
   const html = await ejs.renderFile(
     path.resolve(__dirname, "views/emails/welcome.ejs"),
