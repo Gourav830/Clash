@@ -1,31 +1,47 @@
 import express from "express";
 import "dotenv/config";
-import path from "path";
+import cors from "cors";
+// import helmet from "helmet";
+import ExpressFileUpoad from "express-fileupload";
+import { createServer } from "http";
+const PORT = process.env.PORT || 7000;
+import * as path from "path";
 import { fileURLToPath } from "url";
-import ejs from "ejs";
-import Routes from "./routes/index.js";
+// import { Server } from "socket.io";
+// 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = process.env.PORT || 5000;
+const server = createServer(app);
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.CLIENT_URL,
+//   },
+// });
+// export { io };
+// setupSocket(io);
+// 
+// *middleware
+app.use(cors());
+// app.use(helmet());
+app.use(ExpressFileUpoad({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(applimiter);
-app.set("view engine", "ejs");
-app.set("views", path.resolve(__dirname, "views"));
-app.use(Routes);
 app.use(express.static("public"));
-app.get("/", async (req, res) => {
-    const html = await ejs.renderFile(path.resolve(__dirname, "views/emails/welcome.ejs"), { name: "singla" });
-    await emailQueue.add(emailQueueName, {
-        to: "kidipa1018@exoular.com",
-        subject: "Testing",
-        body: html,
-    });
-    res.send("Hello World");
-});
+// * Set View engine
+app.set("view engine", "ejs");
+app.set("views", path.resolve(__dirname, "./views"));
+// * Set Queue
 import "./jobs/index.js";
-import { emailQueue, emailQueueName } from "./jobs/emailJobs.js";
-import { applimiter } from "./config/rateLinit.js";
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// app.get("/", async (req: Request, res: Response) => {
+//   const hoursDiff = checkDateHourDifference("2024-07-15T07:36:28.019Z");
+//   return res.json({ message: hoursDiff });
+// });
+// *Routes
+import routes from "./routes/index.js";
+// import { checkDateHourDifference } from "./helper.js";
+// import { setupSocket } from "./socket.js";
+app.use("/", routes);
+server.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
