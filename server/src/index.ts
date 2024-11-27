@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
 import Routes from "./routes/index.js";
+import fileUpload from "express-fileupload";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Application = express();
@@ -20,7 +21,7 @@ app.set("views", path.resolve(__dirname, "views"));
 app.use(Routes);
 
 
-
+app.use(express.static ("public"));
 app.get("/", async (req: Request, res: Response) => {
   const html = await ejs.renderFile(
     path.resolve(__dirname, "views/emails/welcome.ejs"),

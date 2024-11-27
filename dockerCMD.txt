@@ -13,4 +13,11 @@
   "email": "hijefa5946@cashbn.com",
   "password": "123456"
 
+} ,
+
+ {
+
+  "email": "reyecog994@cashbn.com",
+  "password": "qwerty"
+
 } 
