@@ -10,9 +10,11 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { EllipsisVertical } from 'lucide-react';
 import dynamic from 'next/dynamic';  
+import DeleteClash from './deleteClash';
  const EditClash = dynamic(() => import('./editClash'))
 const ClashCardMenu = ({clash,token}:{clash:ClashType,token:string}) => {
     const [open, setOpen] = useState(false);
+    const [delOpen, setDelOpen] = useState(false);
     return (
 
         <>
@@ -20,6 +22,11 @@ const ClashCardMenu = ({clash,token}:{clash:ClashType,token:string}) => {
     {open && (
               <Suspense fallback={<p>Loading....</p>} >
         <EditClash token={token} clash={clash} open={open} setOpen={setOpen}/>
+        </Suspense>
+    )}
+    {delOpen && (
+              <Suspense fallback={<p>Loading....</p>} >
+        <DeleteClash token={token} id={clash?.id!} open={delOpen} setOpen={setDelOpen}/>
         </Suspense>
     )}
 
@@ -32,7 +39,7 @@ const ClashCardMenu = ({clash,token}:{clash:ClashType,token:string}) => {
    
     <DropdownMenuItem onClick={()=>{setOpen(true)}}>Edit</DropdownMenuItem>
     <DropdownMenuItem>Copy Link</DropdownMenuItem>
-    <DropdownMenuItem>Delete</DropdownMenuItem>
+    <DropdownMenuItem onClick={()=>{setDelOpen(true)}}>Delete</DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
 </>
