@@ -7,7 +7,8 @@ export async function fetchClases(token:string) {
         },
         next:{
             revalidate:60*60,
-            tags:['dashboard']
+            tags:['dashboard'],
+            
         }
     })
     if(!res.ok)  {
