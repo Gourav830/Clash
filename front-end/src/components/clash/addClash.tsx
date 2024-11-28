@@ -62,10 +62,11 @@ const AddClash = ({ user }: { user: Customuser }) => {
       });
 
       toast.success(data?.message || "Clash created successfully!");
-      setClashData({ title: "", description: "" });
+      setClashData({title: "", description: ""});
       setDate(undefined);
       setImage(null);
       setOpen(false);
+      setErrors({ title: "", description: "", image: "", expire_at: "" });
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 422) {
