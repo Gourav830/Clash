@@ -12,6 +12,7 @@ router.get("/", async (req: Request, res: Response) => {
   try {
     const clash = await prisma.clash.findMany({
       where: { user_id: req.user?.id! },
+      orderBy: { created_at: "desc" },
     });
     return res.json({ message: "Clashed fached Successfully", data: clash });
   } catch (error) {
@@ -71,6 +72,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 
     const clash = await prisma.clash.findUnique({
       where: { id: Number(req.params.id) },
+     
     });
     if (!clash) {
       return res.status(404).json({ message: "Clash not found" });
@@ -138,11 +140,11 @@ const {id} = req.params;
 
 
     const clash = await prisma.clash.findUnique({
-      where: { id: Number(id) },
       select:{
         image:true,
         id:true
-      }
+      },
+      where: { id: Number(id) },
     });
 
 if(clash){
@@ -151,6 +153,11 @@ if(clash){
     if (!clash) {
       return res.status(404).json({ message: "Clash not found" });
     }
+
+    
+    await prisma.clash.delete({
+      where: { id: Number(id) },
+    });
     return res.json({ message: "Clash deleted  successfully" });
   } catch (error) {
     console.error(error);

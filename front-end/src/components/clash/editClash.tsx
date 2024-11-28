@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,16 +27,23 @@ import { toast } from "sonner";
 import { clearCache } from "@/actions/commonAction";
 // import { clearCache } from "ejs";
 
-const AddClash = ({ user }: { user: Customuser }) => {
-  const [open, setOpen] = useState(false);
+const EditClash = ({ token, clash,open,setOpen }: { token:string; clash: ClashType ,open:boolean,setOpen:Dispatch<SetStateAction<boolean>>}) => {
+//   const [open, setOpen] = useState(false);
   const [clashData, setClashData] = useState({
-    title: "",
-    description: "",
+    title: clash.title,
+    description: clash.description,
   });
-  const [date, setDate] = useState<Date | undefined>();
+  const [date, setDate] = useState<Date | undefined>(
+    new Date(clash.expires_at)
+  );
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({ title: "", description: "", image: "", expire_at: "" });
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    image: "",
+    expire_at: "",
+  });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,15 +64,16 @@ const AddClash = ({ user }: { user: Customuser }) => {
       // Debugging: Log formData values
       formData.forEach((value, key) => console.log(`${key}: ${value}`));
 
-      const { data } = await axios.post(createClash, formData, {
+      const { data } = await axios.put(`${createClash}/${clash.id}`, formData, {
         headers: {
-          Authorization: user.token,
+          Authorization: 
+          token,
         },
       });
 
-      toast.success(data?.message || "Clash created successfully!");
+      toast.success(data?.message || "Clash updated successfully!");
       clearCache("dashboard");
-      setClashData({title: "", description: ""});
+      setClashData({ title: "", description: "" });
       setDate(undefined);
       setImage(null);
       setOpen(false);
@@ -102,9 +110,13 @@ const AddClash = ({ user }: { user: Customuser }) => {
               id="title"
               placeholder="Enter Title"
               value={clashData.title}
-              onChange={(e) => setClashData({ ...clashData, title: e.target.value })}
+              onChange={(e) =>
+                setClashData({ ...clashData, title: e.target.value })
+              }
             />
-            {errors.title && <span className="text-red-500">{errors.title}</span>}
+            {errors.title && (
+              <span className="text-red-500">{errors.title}</span>
+            )}
           </div>
 
           {/* Description Field */}
@@ -114,9 +126,13 @@ const AddClash = ({ user }: { user: Customuser }) => {
               id="description"
               placeholder="Enter Description"
               value={clashData.description}
-              onChange={(e) => setClashData({ ...clashData, description: e.target.value })}
+              onChange={(e) =>
+                setClashData({ ...clashData, description: e.target.value })
+              }
             />
-            {errors.description && <span className="text-red-500">{errors.description}</span>}
+            {errors.description && (
+              <span className="text-red-500">{errors.description}</span>
+            )}
           </div>
 
           {/* Image Upload */}
@@ -128,7 +144,9 @@ const AddClash = ({ user }: { user: Customuser }) => {
               accept="image/*"
               onChange={handleImageChange}
             />
-            {errors.image && <span className="text-red-500">{errors.image}</span>}
+            {errors.image && (
+              <span className="text-red-500">{errors.image}</span>
+            )}
           </div>
 
           {/* Date Picker */}
@@ -151,12 +169,16 @@ const AddClash = ({ user }: { user: Customuser }) => {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={setDate}
+                  onSelect={(date) => {
+                    setDate(date!);
+                  }}
                   initialFocus
                 />
               </PopoverContent>
             </Popover>
-            {errors.expire_at && <span className="text-red-500">{errors.expire_at}</span>}
+            {errors.expire_at && (
+              <span className="text-red-500">{errors.expire_at}</span>
+            )}
           </div>
 
           {/* Submit Button */}
@@ -171,4 +193,4 @@ const AddClash = ({ user }: { user: Customuser }) => {
   );
 };
 
-export default AddClash;
+export default EditClash;
