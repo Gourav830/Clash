@@ -1,9 +1,16 @@
-'use client'
+
 import React from 'react';
 import Link from 'next/link';
 import Login from '@/components/auth/login';
+import { authOptions, customSession } from '../../api/auth/[...nextauth]/options';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-const Page = () => {
+const Page =async () => {
+    const session = await getServerSession(authOptions);
+    if(session){
+        redirect('/dashboard');
+    }
     return (
         <div className='flex justify-center items-center h-screen font-bold'>
             <div className='w-[550px] bg-white rounded-xl px-10 shadow-md py-5'>
