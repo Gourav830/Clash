@@ -25,7 +25,7 @@ model User {
   email_verified_token String?
   created_at DateTime @default(now())
   Clash Clash[]
-}
+  }
 model Clash{
   id Int @id @default(autoincrement())
   user User @relation(fields: [user_id], references: [id],onDelete: Cascade)

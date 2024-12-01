@@ -3,7 +3,7 @@ import NavBar from '../../components/base/navBar';
 import AddClash from '../../components/clash/addClash';
 import { authOptions, customSession } from '../api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
-import { fetchClases } from '../fetch/clashFetch';
+import { fetchClases } from '../../fetch/clashFetch';
 import ClashCard from '@/components/clash/clashCard';
 
 const Page = async  () => {
