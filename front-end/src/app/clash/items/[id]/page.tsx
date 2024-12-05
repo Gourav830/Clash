@@ -4,6 +4,7 @@ import { fetchClase } from '@/fetch/clashFetch';
 import AddClashItems from '../../../../components/clash/addClashItems';
 import { authOptions, customSession } from '@/app/api/auth/[...nextauth]/options';
 import {  getServerSession } from 'next-auth';
+import ViewClash from '@/components/clash/viewClash';
 
 const Page = async ({params}:{params:any}) => {
     const clash :ClashType|null= await fetchClase(params.id)
@@ -15,8 +16,8 @@ const Page = async ({params}:{params:any}) => {
             <div className="mt-4">
                 <h1 className='text-2xl lg:text-4xl font-extrabold'>{clash?.title}</h1>
                 <p className='text-lg lg:text-xl font-semibold'>{clash?.description}</p>
-         
-            <AddClashItems token={session?.user?.token!} clashId={params?.id!}/>
+         {clash?.ClashItems && clash.ClashItems.length>0 ? <ViewClash clash={clash}/> : 
+            <AddClashItems token={session?.user?.token!} clashId={params?.id!}/>}
             </div>
 
         </div>

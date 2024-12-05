@@ -7,16 +7,16 @@ import { createServer, Server as HttpServer } from "http";
 const PORT = process.env.PORT || 7000;
 import * as path from "path";
 import { fileURLToPath } from "url";
-// import { Server } from "socket.io";
+import { Server } from "socket.io";
 // 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Application = express();
 const server: HttpServer = createServer(app);
-// const io = new Server(server, {
-//   cors: {
-//     origin: process.env.CLIENT_URL,
-//   },
-// });
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL,
+  },
+});
 
 // export { io };
 
