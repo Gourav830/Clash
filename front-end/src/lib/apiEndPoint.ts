@@ -7,4 +7,5 @@ export const check_credential = `${BASE_URL}/auth/logincheck`;
 export const forgetPassword = `${BASE_URL}/auth/forgot-password`;
 export const resetPassword = `${BASE_URL}/auth/reset-password`;
 export const createClash = `${BASE_URL}/clash`;
+export const clashItems = `${BASE_URL}/clash/items`;
 // export const editClash = `${BASE_URL}/clash/:id`;

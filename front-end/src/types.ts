@@ -18,3 +18,6 @@ type ClashType = {
     created_at: string;
 
 }
+type ClashItemsForm = {
+    image:File|null;
+}
