@@ -14,11 +14,11 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL,
+        origin: process.env.CLIENT_APP_URL,
     },
 });
-// export { io };
-// setupSocket(io);
+export { io };
+setupSocket(io);
 // 
 // *middleware
 app.use(cors());
@@ -41,6 +41,7 @@ import "./jobs/index.js";
 // });
 // *Routes
 import routes from "./routes/index.js";
+import { setupSocket } from "./socket.js";
 // import { checkDateHourDifference } from "./helper.js";
 // import { setupSocket } from "./socket.js";
 app.use("/", routes);

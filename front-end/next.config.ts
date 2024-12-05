@@ -9,12 +9,9 @@ const nextConfig: NextConfig = {
         hostname:"localhost",
         protocol:"http"
       },
-      // {
-      //   hostname:"*",
-      //   protocol:"https"
-      // }
-    ]
-  }
+    ],
+  },
+   reactStrictMode:false,
 };
 
 export default nextConfig;

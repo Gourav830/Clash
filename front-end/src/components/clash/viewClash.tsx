@@ -1,13 +1,27 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import { clashItems } from '../../lib/apiEndPoint';
 import CountUp from "react-countup";
+import socket from "@/lib/socket";
 const ViewClash = ({ clash }: { clash: ClashType }) => {
   const [clashComments, setClashComments] = useState(clash.ClashComments);
     const [clashItems,setClashItems] = useState(clash.ClashItems)
+    useEffect(()=>{
+        socket.on(`clashing=${clash.id}`,(data)=>{
+          updateCounter(data?.clashItemId)
+        })
+      })
+      const updateCounter = (id:number)=>{
+        const items = [...clashItems]
+        const findIndex = clashItems.findIndex((item)=>item.id === id)
+        if(findIndex !== -1){
+            items[findIndex].count += 1
+        }
+        setClashItems(items)
+          }
   return (
     <div className="mt-10">
       {/* Clash Items */}

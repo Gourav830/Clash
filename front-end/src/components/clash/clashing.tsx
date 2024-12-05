@@ -1,16 +1,40 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import { clashItems } from "../../lib/apiEndPoint";
 import CountUp from "react-countup";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { ThumbsUp } from "lucide-react";
+import socket from "@/lib/socket";
 const Clashing = ({ clash }: { clash: ClashType }) => {
   const [clashComments, setClashComments] = useState(clash.ClashComments);
   const [clashItems, setClashItems] = useState(clash.ClashItems);
   const [comment, setComment] = useState("");
+  const [hideVote, setHideVote] = useState(false);
+  const handleVote = (id:number)=>{
+    if(clashItems && clashItems.length > 0){
+      setHideVote(true)
+        updateCounter(id)
+
+        socket.emit(`clashing=${clash.id}`,{clashId:clash.id,clashItemId:id})
+    }
+  }
+  const updateCounter = (id:number)=>{
+const items = [...clashItems]
+const findIndex = clashItems.findIndex((item)=>item.id === id)
+if(findIndex !== -1){
+    items[findIndex].count += 1
+}
+setClashItems(items)
+  }
+  useEffect(()=>{
+    socket.on(`clashing=${clash.id}`,(data)=>{
+      updateCounter(data?.clashItemId)
+    })
+  })
   return (
     <div className="mt-10">
       {/* Clash Items */}
@@ -29,12 +53,21 @@ const Clashing = ({ clash }: { clash: ClashType }) => {
                     className="w-full h-[300px] object-contain"
                   />
                 </div>
+                {hideVote ? (
+                
                 <CountUp
                   start={0}
                   end={item.count}
                   duration={1}
                   className="text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
                 />
+            ): (   
+                <Button onClick={()=>{handleVote(item.id)}}>
+
+                    <span className="mr-2 text-lg ">Vote</span>
+                    <ThumbsUp />
+                </Button>
+            )}
               </div>
 
               {/* VS Block */}

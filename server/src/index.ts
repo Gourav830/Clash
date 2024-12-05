@@ -10,17 +10,21 @@ import { fileURLToPath } from "url";
 import { Server } from "socket.io";
 // 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+
+
+
 const app: Application = express();
 const server: HttpServer = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_APP_URL,
   },
 });
 
-// export { io };
+export { io };
 
-// setupSocket(io);
+setupSocket(io);
 // 
 // *middleware
 app.use(cors());
@@ -50,6 +54,7 @@ import "./jobs/index.js";
 
 // *Routes
 import routes from "./routes/index.js";
+import { setupSocket } from "./socket.js";
 // import { checkDateHourDifference } from "./helper.js";
 // import { setupSocket } from "./socket.js";
 app.use("/", routes);
