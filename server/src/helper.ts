@@ -50,7 +50,7 @@ export const imageValidator = (size:number,mine:string):string|null =>{
 export const bytesToMb = (bytes:number):number => {
   return bytes / 1024 / 1024;
 }
-export const uploadedFile =async (image:UploadedFile)=>{
+export const uploadedFile = (image:UploadedFile)=>{
   const imageExt = image?.name.split('.')
 
   const imageName =uuid4() + '.' + imageExt[imageExt.length - 1]
