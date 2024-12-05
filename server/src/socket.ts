@@ -18,20 +18,9 @@ export function setupSocket(io:Server) {
         }else if(eventName.startsWith("clashing_comment-")){
             // console.log("The comment data is ",data);
             await commentQueue.add(commentQueueName,data);
-            socket.broadcast.emit(`clashing_comment-${data?.id}`, data);
+            socket.broadcast.emit(`clashing_comment-${data?.id}`, data);}
     })
-        // socket.on("join", (data) => {
-        //     console.log("Joining room", data);
-        //     socket.join(data);
-        // });
-        // socket.on("leave", (data) => {
-        //     console.log("Leaving room", data);
-        //     socket.leave(data);
-        // });
-        // socket.on("message", (data) => {
-        //     console.log("Message", data);
-        //     io.to(data.room).emit("message", data);
-        // });
+
     })
     
 }
