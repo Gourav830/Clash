@@ -3,32 +3,29 @@ import { defaultQueueOtions, redisConnectionOptions } from "../config/queue.js";
 
 import prisma from "../config/database.js";
 
-export const votingQueueName = "votingQueue";
+export const commentQueueName = "commentQueue";
 
-export const votingQueue = new Queue(votingQueueName, {
+export const commentQueue = new Queue(commentQueueName, {
   connection: redisConnectionOptions,
   defaultJobOptions: {
     ...defaultQueueOtions,
-    delay:500
+    delay:1000
   },
 });
 
 export const queueWorker = new Worker(
-  votingQueueName,
+  commentQueueName,
   async (job: Job) => {
     const data = job.data;
-    console.log("Processing job", data);
-    console.log(data?.clashItemId);
-    await prisma.clashItem.update({
-      where: {
-        id: Number(data?.clashItemId),
-      },
-      data:{
-        count:{
-            increment:1
+    // console.log("Processing job", data);
+    // console.log(data?.clashItemId);
+    await prisma.clashComments.create({
+        data:{
+            comment:data?.comment,
+            clash_id:Number(data?.id),
+            created_at:new Date()
         }
-      }
-    });
+    })
   },
   {
     connection: redisConnectionOptions,

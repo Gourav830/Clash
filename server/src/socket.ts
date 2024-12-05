@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { votingQueue, votingQueueName } from "./jobs/votingJobs.js";
+import { commentQueue, commentQueueName } from "./jobs/commentjob.js";
 
 export function setupSocket(io:Server) {
     io.on("connection", (socket) => {
@@ -11,10 +12,13 @@ export function setupSocket(io:Server) {
     socket.onAny(async (eventName:string,data:any) => {
         console.log(eventName,data);
         if(eventName.startsWith("clashing-")){
-            // console.log("The vote data is ",data);
+            console.log("The vote data is ",data);
             await votingQueue.add(votingQueueName,data);
-            socket.broadcast.emit(`clashing-${data?.clashId}`,data);
-        }
+            socket.broadcast.emit(`clashing-${data?.clashId}`, data);
+        }else if(eventName.startsWith("clashing_comment-")){
+            // console.log("The comment data is ",data);
+            await commentQueue.add(commentQueueName,data);
+            socket.broadcast.emit(`clashing_comment-${data?.id}`, data);
     })
         // socket.on("join", (data) => {
         //     console.log("Joining room", data);

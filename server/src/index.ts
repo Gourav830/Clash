@@ -1,7 +1,7 @@
 import express, { Application, Response, Request } from "express";
 import "dotenv/config";
 import cors from "cors";
-// import helmet from "helmet";
+import helmet from "helmet";
 import ExpressFileUpoad from "express-fileupload";
 import { createServer, Server as HttpServer } from "http";
 const PORT = process.env.PORT || 7000;
@@ -28,7 +28,7 @@ setupSocket(io);
 // 
 // *middleware
 app.use(cors());
-// app.use(helmet());
+app.use(helmet());
 app.use(
   ExpressFileUpoad({
     useTempFiles: true,

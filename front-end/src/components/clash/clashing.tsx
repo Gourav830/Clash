@@ -3,12 +3,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/utils";
 import Image from "next/image";
-import { clashItems } from "../../lib/apiEndPoint";
 import CountUp from "react-countup";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { ThumbsUp } from "lucide-react";
 import socket from "@/lib/socket";
+import { toast } from "sonner";
 const Clashing = ({ clash }: { clash: ClashType }) => {
   const [clashComments, setClashComments] = useState(clash.ClashComments);
   const [clashItems, setClashItems] = useState(clash.ClashItems);
@@ -19,7 +19,7 @@ const Clashing = ({ clash }: { clash: ClashType }) => {
       setHideVote(true)
         updateCounter(id)
 
-        socket.emit(`clashing=${clash.id}`,{clashId:clash.id,clashItemId:id})
+        socket.emit(`clashing-${clash.id}`,{clashId:clash.id,clashItemId:id})
     }
   }
   const updateCounter = (id:number)=>{
@@ -30,9 +30,40 @@ if(findIndex !== -1){
 }
 setClashItems(items)
   }
+  const updateComment = (payload:any)=>{
+    if(clashComments && clashComments.length > 0){
+
+        setClashComments([payload,...clashComments])
+        }else{
+            setClashComments([payload])
+        }
+
+  }
+  const handleComment = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (comment.length>2) {
+        const payload  ={
+            id:clash.id,
+            comment:comment,
+            created_at:new Date().toDateString()
+
+        }
+        updateComment(payload)
+        socket.emit(`clashing_comment-${clash.id}`,payload)
+        setComment("")
+        
+      }
+    else{
+        toast.warning("Comment should be atleast 3 characters")
+    }
+    
+    }
   useEffect(()=>{
-    socket.on(`clashing=${clash.id}`,(data)=>{
+    socket.on(`clashing-${clash.id}`,(data)=>{
       updateCounter(data?.clashItemId)
+    })
+    socket.on(`clashing_comment-${clash.id}`,(data)=>{
+      updateComment(data)
     })
   })
   return (
@@ -82,7 +113,7 @@ setClashItems(items)
           ))}
       </div>
 
-      <form className="mt-4 w-full">
+      <form className="mt-4 w-full" onSubmit={handleComment}>
         <Textarea
           placeholder="Type Your Suggession"
           value={comment}

@@ -9,10 +9,23 @@ import socket from "@/lib/socket";
 const ViewClash = ({ clash }: { clash: ClashType }) => {
   const [clashComments, setClashComments] = useState(clash.ClashComments);
     const [clashItems,setClashItems] = useState(clash.ClashItems)
+    const updateComment = (payload:any)=>{
+        if(clashComments && clashComments.length > 0){
+    
+            setClashComments([payload,...clashComments])
+            }else{
+                setClashComments([payload])
+            }
+    
+      }
+    
     useEffect(()=>{
-        socket.on(`clashing=${clash.id}`,(data)=>{
+        socket.on(`clashing-${clash.id}`,(data)=>{
           updateCounter(data?.clashItemId)
         })
+        socket.on(`clashing_comment-${clash.id}`,(data)=>{
+            updateComment(data)
+          })
       })
       const updateCounter = (id:number)=>{
         const items = [...clashItems]
