@@ -1,28 +1,28 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
-// import helmet from "helmet";
+import helmet from "helmet";
 import ExpressFileUpoad from "express-fileupload";
 import { createServer } from "http";
 const PORT = process.env.PORT || 7000;
 import * as path from "path";
 import { fileURLToPath } from "url";
-// import { Server } from "socket.io";
+import { Server } from "socket.io";
 // 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const server = createServer(app);
-// const io = new Server(server, {
-//   cors: {
-//     origin: process.env.CLIENT_URL,
-//   },
-// });
-// export { io };
-// setupSocket(io);
+const io = new Server(server, {
+    cors: {
+        origin: process.env.CLIENT_APP_URL,
+    },
+});
+export { io };
+setupSocket(io);
 // 
 // *middleware
 app.use(cors());
-// app.use(helmet());
+app.use(helmet());
 app.use(ExpressFileUpoad({
     useTempFiles: true,
     tempFileDir: "/tmp/",
@@ -41,6 +41,7 @@ import "./jobs/index.js";
 // });
 // *Routes
 import routes from "./routes/index.js";
+import { setupSocket } from "./socket.js";
 // import { checkDateHourDifference } from "./helper.js";
 // import { setupSocket } from "./socket.js";
 app.use("/", routes);

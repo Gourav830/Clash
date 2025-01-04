@@ -1,3 +1,4 @@
+
 type ClashFormType = {
     title?: string;
     description?: string;
@@ -16,8 +17,20 @@ type ClashType = {
     image: string;
     expires_at: string;
     created_at: string;
+    ClashItems:Array<ClashItem>;
+    ClashComments:Array<ClashComment>;
 
 }
 type ClashItemsForm = {
     image:File|null;
+}
+type ClashItem ={
+    id:number;
+    image:string;
+    count:number;
+}
+type ClashComment = {
+    id:number;
+    comment:string;
+    created_at:string;
 }
