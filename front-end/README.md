@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clash - Image Comparison & Anonymous Messaging Platform
 
-## Getting Started
+Clash is a web application designed to allow users to compare two photos based on likes, send anonymous messages, and manage user authentication securely. It leverages modern web technologies for high performance, scalability, and real-time interaction.
 
-First, run the development server:
+## 🚀 Features
+
+- 📸 **Photo Comparison** - Post two images and let users vote on their favorite.
+- 💬 **Anonymous Messaging** - Users can send messages without revealing their identity.
+- 🔐 **Secure Authentication** - Email verification during registration and a "Forgot Password" feature.
+- ⚡ **Queue Processing** - Uses BullMQ for background tasks like email notifications.
+- 📩 **Email System** - Nodemailer integration for sending verification and password reset emails.
+- 🗃️ **Caching & Performance** - Redis for caching and quick data access.
+- 🌎 **Real-time Communication** - Socket.io for instant messaging.
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+
+- **Framework:** Next.js
+- **Styling:** Tailwind CSS
+- **Authentication:** NextAuth.js
+- **Real-time:** Socket.io-client
+
+### **Backend**
+
+- **Server:** Node.js, Express.js
+- **Database:** PostgreSQL (via Prisma ORM)
+- **Queue Management:** BullMQ (Redis-based)
+- **Email Service:** Nodemailer
+- **Security:** Helmet, Express-rate-limit
+
+## 📦 Installation
+
+### 1️⃣ **Clone the Repository**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+ git clone https://github.com/Gourav830/Clash.git
+ cd Clash
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ **Setup Environment Variables**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the root directory and add the following:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+PORT=3000
+DATABASE_URL=your_postgres_connection_string
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+JWT_SECRET=your_jwt_secret
+NEXTAUTH_SECRET=your_nextauth_secret
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+```
 
-## Learn More
+### 3️⃣ **Install Dependencies**
 
-To learn more about Next.js, take a look at the following resources:
+#### **Backend**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd backend
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### **Frontend**
 
-## Deploy on Vercel
+```bash
+cd frontend
+npm install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4️⃣ **Run the Application**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### **Backend**
+
+```bash
+cd backend
+npm run dev
+```
+
+#### **Frontend**
+
+```bash
+cd frontend
+npm run dev
+```
+
+Now visit [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📤 Deployment
+
+### **Docker Setup**
+
+To run Clash with Docker:
+
+```bash
+docker-compose up --build
+```
+
+### **Production Deployment**
+
+- **Frontend:** Deploy on [Vercel](https://vercel.com/)
+- **Backend:** Deploy on AWS EC2, Railway, or Render
+- **Database:** Use a managed PostgreSQL service
+
+## 🤝 Contributing
+
+We welcome contributions! Please fork the repository and submit a pull request with your improvements.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+🚀 Built by [Gourav Singla](https://github.com/Gourav830)
