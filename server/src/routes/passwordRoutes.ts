@@ -10,17 +10,22 @@ import { authLimiter } from "../config/rateLinit.js";
 
 const router = Router();
 
-router.post("/forgot-password", authLimiter,async (req: Request, res: Response) => {
+router.post("/forgot-password", authLimiter,async (req: Request, res: Response) :Promise<void>=> {
     try {
         // Send email to user with the link to reset password
         const body = req.body;
+
+        
          const payload = ForgertPasswordSchema.parse(body)
 
                 let user = await prisma.user.findUnique({where:{email:payload.email}})
             if(!user || user==null)  {
-                return res.status(422).json({message:"Email not found",errors:{
+                 res.status(422).json({message:"Email not found",errors:{
                     email:"Email not found"
-                }})
+                }
+         
+            })
+            return;
             } 
             const salt = await bcrypt.genSalt(10);
            const token = await bcrypt.hash(uuid4(), salt); 
@@ -44,20 +49,23 @@ router.post("/forgot-password", authLimiter,async (req: Request, res: Response) 
             });
 
 
-                 return res.json({ message: "Email has been sent" });
+                  res.json({ message: "Email has been sent" });
+                  return;
      } catch (error) {
             if (error instanceof ZodError ) {
               const errors = formatEror(error);
-              return res.status(422).json({ message: "Invalid data", errors });
+               res.status(422).json({ message: "Invalid data", errors });
+            return;
             }
             console.error(error);
-            return res
+             res
               .status(500)
               .json({ message: "Something went wrong. Please try again later." });
+              return;
           }
     });
 
-    router.post("/reset-password",authLimiter, async (req: Request, res: Response) => {
+    router.post("/reset-password",authLimiter, async (req: Request, res: Response):Promise<void> => {
         try {
             const body = req.body;
             const payload = passwordResetSchema.parse(body);
@@ -70,19 +78,22 @@ router.post("/forgot-password", authLimiter,async (req: Request, res: Response) 
                 where: { email: payload.email },
               });
             if(!user || user==null)  {
-                return res.status(422).json({message:"Email not found",errors:{
+                 res.status(422).json({message:"Email not found",errors:{
                     email:"Check link again"
                 }})
+                return;
             } 
 if(user.passwordResetToken !== payload.token){
-    return res.status(422).json({message:"link",errors:{
+     res.status(422).json({message:"link",errors:{
         email:"Check link again"
     }})
+    return;
 }
 const hoursDiff = checkDateHourDifference(user.token_send_at!);
 if(hoursDiff>2){
-    return res.status(422).json({message:"Token expired",errors
+     res.status(422).json({message:"Token expired",errors
     :{emails:{message:"Token expired"}}})
+    return;
     }
 
           const newSalt = await bcrypt.genSalt(10);
@@ -98,17 +109,18 @@ if(hoursDiff>2){
                 }
             })
 
-                return res.json({message:"Password has been reset"});
-
+                 res.json({message:"Password has been reset"});
+return;
         } catch (error) {
             if (error instanceof ZodError ) {
               const errors = formatEror(error);
-              return res.status(422).json({ message: "Invalid data", errors });
-            }
+               res.status(422).json({ message: "Invalid data", errors });
+           return;}
             console.error(error);
-            return res
+             res
               .status(500)
               .json({ message: "Something went wrong. Please try again later." });
+              return;
           }
     });
 

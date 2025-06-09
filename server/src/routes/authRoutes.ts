@@ -16,7 +16,7 @@ const router = Router();
 declare module "express-serve-static-core" {
   interface Request {
     user?: {
-      id: string;
+      id: any;
       name: string;
       email: string;
     };
@@ -24,7 +24,7 @@ declare module "express-serve-static-core" {
 }
 
 // Register Route
-router.post("/register",authLimiter, async (req: Request, res: Response) => {
+router.post("/register",authLimiter, async (req: Request, res: Response):Promise<void> => {
   try {
     const body = req.body;
     const payload = registerSchema.parse(body);
@@ -34,9 +34,10 @@ router.post("/register",authLimiter, async (req: Request, res: Response) => {
       where: { email: payload.email },
     });
     if (user) {
-      return res.status(422).json({
+       res.status(422).json({
         errors: { email: "Email already exists" },
       });
+       return;
     }
 
     // Encrypt password
@@ -68,21 +69,24 @@ router.post("/register",authLimiter, async (req: Request, res: Response) => {
       },
     });
 
-    return res.json({ message: "Check your email to verify your account" });
+     res.json({ message: "Check your email to verify your account" });
+      return;
   } catch (error) {
     if (error instanceof ZodError) {
       const errors = formatEror(error);
-      return res.status(422).json({ message: "Invalid data", errors });
+       res.status(422).json({ message: "Invalid data", errors });
+        return;
     }
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
+       return;
   }
 });
 
 // Login Route
-router.post("/login",authLimiter, async (req: Request, res: Response) => {
+router.post("/login",authLimiter, async (req: Request, res: Response) :Promise<void>=> {
   try {
     const body = req.body;
     const payload = loginSchema.parse(body);
@@ -91,16 +95,18 @@ router.post("/login",authLimiter, async (req: Request, res: Response) => {
       where: { email: payload.email },
     });
     if (!user) {
-      return res
+       res
         .status(422)
         .json({ errors: { email: "Invalid credentials" } });
+        return;
     }
 
     const isMatch = await bcrypt.compare(payload.password, user.password);
     if (!isMatch) {
-      return res
+       res
         .status(422)
         .json({ errors: { password: "Invalid credentials" } });
+         return;
     }
 
     const JWT_payload = {
@@ -113,24 +119,26 @@ router.post("/login",authLimiter, async (req: Request, res: Response) => {
       expiresIn: "365d",
     });
 
-    return res.json({
+     res.json({
       message: "Login Success",
       data: {
         ...JWT_payload,
         token: `Bearer ${token}`,
       },
     });
+     return;
   } catch (error) {
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
+       return;
   }
   
 });
 
 // Check Credentials Route
-router.post("/logincheck", authLimiter,async (req: any, res: Response) => {
+router.post("/logincheck", authLimiter,async (req: any, res: Response):Promise<void> => {
   try {
     const body = req.body;
     const payload = loginSchema.parse(body);
@@ -139,31 +147,36 @@ router.post("/logincheck", authLimiter,async (req: any, res: Response) => {
       where: { email: payload.email },
     });
     if (!user) {
-      return res
+       res
         .status(422)
         .json({ errors: { email: "Invalid credentials" } });
+         return;
     }
 
     const isMatch = await bcrypt.compare(payload.password, user.password);
     if (!isMatch) {
-      return res
+       res
         .status(422)
         .json({ errors: { password: "Invalid credentials" } });
+         return;
     }
 
-    return res.json({ message: "Credentials are valid" });
+     res.json({ message: "Credentials are valid" });
+      return;
   } catch (error) {
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
+       return;
   }
 });
 
 // Get User Route
-router.get("/user", authMiddleware, async (req: Request, res: Response) => {
+router.get("/user", authMiddleware, async (req: Request, res: Response) :Promise<any>=> {
   const user = req.user;
-  return res.json({ data: user });
-});
+   res.json({ data: user });
+  return; 
+  });
 
 export default router;
