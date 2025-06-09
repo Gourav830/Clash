@@ -10,26 +10,29 @@ import { clashSchema } from "../validations/clashValidation.js";
 import { FileArray, UploadedFile } from "express-fileupload";
 import prisma from "../config/database.js";
 import authMiddleware from "../middleware/authMiddleWare.js";
-import { uploadedFile } from "../helper";
+// import { uploadedFile } from "../helper";
+// import { REGISTER_URL } from '../../../front-end/src/lib/apiEndPoint';
 
 const router = Router();
 
-router.get("/", authMiddleware, async (req: Request, res: Response) => {
+router.get("/", authMiddleware, async (req: Request, res: Response):Promise<void> => {
   try {
     const clash = await prisma.clash.findMany({
       where: { user_id: req.user?.id! },
       orderBy: { created_at: "desc" },
     });
-    return res.json({ message: "Clashed fached Successfully", data: clash });
-  } catch (error) {
+     res.json({ message: "Clashed fached Successfully", data: clash });
+    return;
+    } catch (error) {
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
+      return;
   }
 });
 
-router.post("/", authMiddleware, async (req: Request, res: Response) => {
+router.post("/", authMiddleware, async (req: Request, res: Response):Promise<void> => {
   try {
     const body = req.body;
     const payload = clashSchema.parse(body);
@@ -40,12 +43,14 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
       const validMsg = imageValidator(image?.size, image?.mimetype);
 
       if (validMsg) {
-        return res.status(422).json({ errors: { image: validMsg } });
-      }
+         res.status(422).json({ errors: { image: validMsg } });
+        return;
+        }
 
       payload.image = await uploadedFile(image);
     } else {
-      return res.status(422).json({ errors: { image: "Image is required " } });
+      res.status(422).json({ errors: { image: "Image is required " } });
+    return;
     }
     await prisma.clash.create({
       data: {
@@ -56,20 +61,23 @@ router.post("/", authMiddleware, async (req: Request, res: Response) => {
         expires_at: new Date(payload.expires_at),
       },
     });
-    return res.json({ message: "Clash created successfully" });
-  } catch (error) {
+     res.json({ message: "Clash created successfully" });
+  return;
+    } catch (error) {
     if (error instanceof ZodError) {
       const errors = formatEror(error);
-      return res.status(422).json({ message: "Invalid data", errors });
-    }
+       res.status(422).json({ message: "Invalid data", errors });
+    return;
+      }
     console.error(error);
-    return res
+    res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
-  }
+  return;
+    }
 });
 
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", async (req: Request, res: Response):Promise<void> => {
   try {
     const clash = await prisma.clash.findUnique({
       where: { id: Number(req.params.id) },
@@ -94,21 +102,25 @@ router.get("/:id", async (req: Request, res: Response) => {
       },
     });
     if (!clash) {
-      return res.status(404).json({ message: "Clash not found" });
-    }
-    return res.json({ message: "Clash fetched successfully", data: clash });
-  } catch (error) {
+       res.status(404).json({ message: "Clash not found" });
+      return;
+      }
+    res.json({ message: "Clash fetched successfully", data: clash });
+  return;
+  }
+   catch (error) {
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
-  }
+  return;
+    }
 });
 router.put(
   "/:id",
   authMiddleware,
   authMiddleware,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response):Promise<void> => {
     try {
       const { id } = req.params;
       const body = req.body;
@@ -118,10 +130,11 @@ router.put(
         const image: UploadedFile = req.files?.image as UploadedFile;
         const validMsg = imageValidator(image?.size, image?.mimetype);
         if (validMsg) {
-          return res
+           res
             .status(422)
             .json({ message: "Invalid data", errors: { image: validMsg } });
-        }
+        return;
+          }
         const clash = await prisma.clash.findUnique({
           where: { id: Number(id) },
           select: {
@@ -142,21 +155,24 @@ router.put(
           expires_at: new Date(payload.expires_at),
         },
       });
-      return res.json({ message: "Clash updated successfully" });
-    } catch (error) {
+       res.json({ message: "Clash updated successfully" });
+    return;
+      } catch (error) {
       if (error instanceof ZodError) {
         const errors = formatEror(error);
-        return res.status(422).json({ message: "Invalid data", errors });
-      }
+         res.status(422).json({ message: "Invalid data", errors });
+      return;
+        }
       console.error(error);
-      return res
+      res
         .status(500)
         .json({ message: "Something went wrong. Please try again later." });
     }
+    return;
   }
 );
 
-router.delete("/:id", authMiddleware, async (req: Request, res: Response) => {
+router.delete("/:id", authMiddleware, async (req: Request, res: Response):Promise<void>=>{
   try {
     const { id } = req.params;
     // const clash = await prisma.clash.findUnique({
@@ -175,22 +191,25 @@ router.delete("/:id", authMiddleware, async (req: Request, res: Response) => {
       deleteImage(clash?.image!);
     }
     if (!clash) {
-      return res.status(404).json({ message: "Clash not found" });
+       res.status(404).json({ message: "Clash not found" });
+      return;
     }
 
     await prisma.clash.delete({
       where: { id: Number(id) },
     });
-    return res.json({ message: "Clash deleted  successfully" });
-  } catch (error) {
+     res.json({ message: "Clash deleted  successfully" });
+ return;
+    } catch (error) {
     console.error(error);
-    return res
+     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });
-  }
+  return;
+    }
 });
 
-router.post("/items", authMiddleware, async (req: Request, res: Response) => {
+router.post("/items", authMiddleware, async (req: Request, res: Response):Promise<void> => {
   const { id } = req.body;
 
   const files: FileArray | null | undefined = req.files;
@@ -205,8 +224,9 @@ router.post("/items", authMiddleware, async (req: Request, res: Response) => {
     });
 
     if (imgErrors.length > 0) {
-      return res.status(422).json({ errors: { images: imgErrors } });
-    }
+       res.status(422).json({ errors: { images: imgErrors } });
+      return;
+      }
 
     let uploadedImages: string[] = [];
     images.map((img) => {
@@ -220,11 +240,13 @@ router.post("/items", authMiddleware, async (req: Request, res: Response) => {
         },
       });
     });
-    return res.json({ message: "clash Items added successfully!" });
+    res.json({ message: "clash Items added successfully!" });
+    return;
   }
-  return res
+  res
     .status(422)
     .json({ errors: { images: "Please upload both images" } });
+    return;
 });
 
 export default router;
