@@ -2,7 +2,7 @@
 import React,{useActionState, useEffect} from 'react';
 
 import {  registerAction } from '@/actions/authActions';
-import SubmitBtn from '@/components/common/submitBtn';
+import SubmitBtn from "@/components/common/SubmitBtn";
 import { Input } from '@/components/ui/input';
 // import { useFormState } from 'react-dom';
 import { Label } from '@/components/ui/label';

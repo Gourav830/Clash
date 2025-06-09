@@ -3,10 +3,11 @@ import React, { useActionState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import Link from "next/link";
+// import Link from "next/link";
 import { forgetAction, loginAction } from "@/actions/authActions";
-import SubmitBtn from "../common/submitBtn";
-import { signIn } from "next-auth/react";
+// import SubmitBtn from "../common/submitBtn";
+import SubmitBtn from "@/components/common/SubmitBtn";
+// import { signIn } from "next-auth/react";
 export default function ForgetPass() {
   const initialState = {
     message: "",
