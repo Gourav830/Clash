@@ -1,14 +1,13 @@
 "use client";
-import React, { use, useActionState, useEffect } from "react";
+import React, { useActionState, useEffect } from "react";
 
 import {  resetPasswordAction } from "@/actions/authActions";
-import SubmitBtn from "@/components/common/submitBtn";
+import SubmitBtn from "@/components/common/SubmitBtn";
 import { Input } from "@/components/ui/input";
-// import { useFormState } from 'react-dom';
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useSearchParams,useRouter } from "next/navigation";
-import router from '../../../../server/src/routes/passwordRoutes';
+
 const ResetPass = () => {
   const initalState = {
     status: 0,

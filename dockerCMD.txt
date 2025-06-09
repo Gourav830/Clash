@@ -8,12 +8,7 @@
 
 
 
- {
 
-  "email": "hijefa5946@cashbn.com",
-  "password": "123456"
-
-} ,
 
  {
 

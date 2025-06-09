@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import Link from "next/link";
 import { loginAction } from "@/actions/authActions";
-import SubmitBtn from "../common/submitBtn";
+import SubmitBtn from "@/components/common/SubmitBtn";
 import { signIn } from "next-auth/react";
 export default function Login() {
   const initialState = {
