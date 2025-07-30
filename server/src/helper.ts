@@ -2,15 +2,17 @@ import { date, ZodError, ZodIssue } from "zod";
 import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from 'fs'
+import fs from "fs";
 import { getParentKey } from "bullmq";
 import moment from "moment";
 import { mineTypes } from "./config/fileSystem.js";
-import { UploadedFile } from 'express-fileupload';
-import { v4 as uuid4 } from 'uuid';
+import { UploadedFile } from "express-fileupload";
+import { v4 as uuid4 } from "uuid";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const formatEror = (error: ZodError): any => {
-  let errors: any = {};
+
+export const formatEror = (error: ZodError): Record<string, string> => {
+  let errors: Record<string, string> = {};
   error.errors?.map((issue: ZodIssue) => {
     errors[issue.path?.[0]] = issue.message;
   });
@@ -19,7 +21,7 @@ export const formatEror = (error: ZodError): any => {
 
 export const renderEmailEjs = async (
   fileName: string,
-  payload: any
+  payload: Record<string, any>
 ): Promise<string> => {
   const html: string = await ejs.renderFile(
     path.resolve(__dirname, `views/emails/${fileName}.ejs`),
@@ -28,42 +30,37 @@ export const renderEmailEjs = async (
   return html;
 };
 
-
-export const checkDateHourDifference = ( date: Date): number => {
-
-  const now = moment()
-  const tokenSendAt = moment(date)
-const differece = moment.duration( now.diff(tokenSendAt))
+export const checkDateHourDifference = (date: Date): number => {
+  const now = moment();
+  const tokenSendAt = moment(date);
+  const differece = moment.duration(now.diff(tokenSendAt));
   return differece.asHours();
-}
+};
 
-export const imageValidator = (size:number,mine:string):string|null =>{
-  if(bytesToMb(size) > 2){
-    return 'Image size should be less than 2MB'
-  }else if(!mineTypes.includes(mine)){
-    return 'Invalid file type'
-
+export const imageValidator = (size: number, mine: string): string | null => {
+  if (bytesToMb(size) > 2) {
+    return "Image size should be less than 2MB";
+  } else if (!mineTypes.includes(mine)) {
+    return "Invalid file type";
   }
   return null;
-  
-}
-export const bytesToMb = (bytes:number):number => {
+};
+export const bytesToMb = (bytes: number): number => {
   return bytes / 1024 / 1024;
-}
-export const uploadedFile = (image:UploadedFile)=>{
-  const imageExt = image?.name.split('.')
+};
+export const uploadedFile = (image: UploadedFile) => {
+  const imageExt = image?.name.split(".");
 
-  const imageName =uuid4() + '.' + imageExt[imageExt.length - 1]
-const uploadPath = process.cwd() + '/public/images/' + imageName
-image.mv(uploadPath,(err)=>{
-  if(err) throw err
-})
-return imageName
-
-}
-export const deleteImage = (fileName:string)=>{
-const path = process.cwd() + '/public/images/' + fileName
-if(fs.existsSync(path)){
-  fs.unlinkSync(path)
-}
-}
+  const imageName = uuid4() + "." + imageExt[imageExt.length - 1];
+  const uploadPath = process.cwd() + "/public/images/" + imageName;
+  image.mv(uploadPath, (err) => {
+    if (err) throw err;
+  });
+  return imageName;
+};
+export const deleteImage = (fileName: string) => {
+  const path = process.cwd() + "/public/images/" + fileName;
+  if (fs.existsSync(path)) {
+    fs.unlinkSync(path);
+  }
+};

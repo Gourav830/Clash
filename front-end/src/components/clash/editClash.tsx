@@ -27,8 +27,18 @@ import { toast } from "sonner";
 import { clearCache } from "@/actions/commonAction";
 // import { clearCache } from "ejs";
 
-const EditClash = ({ token, clash,open,setOpen }: { token:string; clash: ClashType ,open:boolean,setOpen:Dispatch<SetStateAction<boolean>>}) => {
-//   const [open, setOpen] = useState(false);
+const EditClash = ({
+  token,
+  clash,
+  open,
+  setOpen,
+}: {
+  token: string;
+  clash: ClashType;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  //   const [open, setOpen] = useState(false);
   const [clashData, setClashData] = useState({
     title: clash.title,
     description: clash.description,
@@ -63,8 +73,7 @@ const EditClash = ({ token, clash,open,setOpen }: { token:string; clash: ClashTy
 
       const { data } = await axios.put(`${createClash}/${clash.id}`, formData, {
         headers: {
-          Authorization: 
-          token,
+          Authorization: token,
         },
       });
 

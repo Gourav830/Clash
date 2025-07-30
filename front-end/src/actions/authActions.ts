@@ -1,8 +1,12 @@
 "use server";
 
-import {check_credential , forgetPassword, REGISTER_URL } from "@/lib/apiEndPoint";
+import {
+  check_credential,
+  forgetPassword,
+  REGISTER_URL,
+} from "@/lib/apiEndPoint";
 import axios, { AxiosError } from "axios";
-import { resetPassword } from '../lib/apiEndPoint';
+import { resetPassword } from "../lib/apiEndPoint";
 export async function registerAction(prevState: any, formdata: FormData) {
   try {
     const data = await axios.post(REGISTER_URL, {
@@ -44,7 +48,6 @@ export async function forgetAction(prevState: any, formData: FormData) {
       status: 200,
       message: "Credentials matched loging you shortly!",
       errors: {},
-   
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -53,7 +56,6 @@ export async function forgetAction(prevState: any, formData: FormData) {
           status: 422,
           message: error.response.data.message,
           errors: error.response.data.errors,
-
         };
       }
     }
@@ -62,7 +64,6 @@ export async function forgetAction(prevState: any, formData: FormData) {
       status: 500,
       message: "something went wrong. Try again",
       errors: {},
-
     };
   }
 }
@@ -102,19 +103,17 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 }
 
-
 export async function resetPasswordAction(prevState: any, formdata: FormData) {
   try {
     const data = await axios.post(resetPassword, {
-           email: formdata.get("email"),
+      email: formdata.get("email"),
       password: formdata.get("password"),
       confirm_password: formdata.get("confirmpassword"),
       token: formdata.get("token"),
     });
     return {
       status: 200,
-      message:
-        "Reset password successful ",
+      message: "Reset password successful ",
       errors: {},
     };
   } catch (error) {
