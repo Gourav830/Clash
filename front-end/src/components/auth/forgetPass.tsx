@@ -1,4 +1,4 @@
- "use client";
+"use client";
 import React, { useActionState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,6 @@ export default function ForgetPass() {
     message: "",
     status: 0,
     errors: {},
-
   };
   const [state, formAction] = useActionState(forgetAction, initialState);
 
@@ -22,7 +21,6 @@ export default function ForgetPass() {
       toast.error(state.message);
     } else if (state.status === 200) {
       toast.success(state.message);
-     
     }
   }, [state]);
 
@@ -33,7 +31,7 @@ export default function ForgetPass() {
         <Input placeholder="Type your email" name="email" />
         <span className="text-red-400">{state.errors?.email}</span>
       </div>
-     
+
       <div className="mt-4">
         <SubmitBtn />
       </div>

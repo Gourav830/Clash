@@ -36,7 +36,12 @@ const AddClash = ({ user }: { user: Customuser }) => {
   const [date, setDate] = useState<Date | undefined>();
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({ title: "", description: "", image: "", expire_at: "" });
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    image: "",
+    expire_at: "",
+  });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -62,7 +67,7 @@ const AddClash = ({ user }: { user: Customuser }) => {
 
       toast.success(data?.message || "Clash created successfully!");
       clearCache("dashboard");
-      setClashData({title: "", description: ""});
+      setClashData({ title: "", description: "" });
       setDate(undefined);
       setImage(null);
       setOpen(false);
@@ -99,9 +104,13 @@ const AddClash = ({ user }: { user: Customuser }) => {
               id="title"
               placeholder="Enter Title"
               value={clashData.title}
-              onChange={(e) => setClashData({ ...clashData, title: e.target.value })}
+              onChange={(e) =>
+                setClashData({ ...clashData, title: e.target.value })
+              }
             />
-            {errors.title && <span className="text-red-500">{errors.title}</span>}
+            {errors.title && (
+              <span className="text-red-500">{errors.title}</span>
+            )}
           </div>
 
           {/* Description Field */}
@@ -111,9 +120,13 @@ const AddClash = ({ user }: { user: Customuser }) => {
               id="description"
               placeholder="Enter Description"
               value={clashData.description}
-              onChange={(e) => setClashData({ ...clashData, description: e.target.value })}
+              onChange={(e) =>
+                setClashData({ ...clashData, description: e.target.value })
+              }
             />
-            {errors.description && <span className="text-red-500">{errors.description}</span>}
+            {errors.description && (
+              <span className="text-red-500">{errors.description}</span>
+            )}
           </div>
 
           {/* Image Upload */}
@@ -125,7 +138,9 @@ const AddClash = ({ user }: { user: Customuser }) => {
               accept="image/*"
               onChange={handleImageChange}
             />
-            {errors.image && <span className="text-red-500">{errors.image}</span>}
+            {errors.image && (
+              <span className="text-red-500">{errors.image}</span>
+            )}
           </div>
 
           {/* Date Picker */}
@@ -153,7 +168,9 @@ const AddClash = ({ user }: { user: Customuser }) => {
                 />
               </PopoverContent>
             </Popover>
-            {errors.expire_at && <span className="text-red-500">{errors.expire_at}</span>}
+            {errors.expire_at && (
+              <span className="text-red-500">{errors.expire_at}</span>
+            )}
           </div>
 
           {/* Submit Button */}

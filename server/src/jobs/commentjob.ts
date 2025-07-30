@@ -9,7 +9,7 @@ export const commentQueue = new Queue(commentQueueName, {
   connection: redisConnectionOptions,
   defaultJobOptions: {
     ...defaultQueueOtions,
-    delay:1000
+    delay: 1000,
   },
 });
 
@@ -18,12 +18,12 @@ export const queueWorker = new Worker(
   async (job: Job) => {
     const data = job.data;
     await prisma.clashComments.create({
-        data:{
-            comment:data?.comment,
-            clash_id:Number(data?.id),
-            created_at:new Date()
-        }
-    })
+      data: {
+        comment: data?.comment,
+        clash_id: Number(data?.id),
+        created_at: new Date(),
+      },
+    });
   },
   {
     connection: redisConnectionOptions,

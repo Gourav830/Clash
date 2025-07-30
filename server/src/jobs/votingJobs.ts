@@ -9,7 +9,7 @@ export const votingQueue = new Queue(votingQueueName, {
   connection: redisConnectionOptions,
   defaultJobOptions: {
     ...defaultQueueOtions,
-    delay:500
+    delay: 500,
   },
 });
 
@@ -21,11 +21,11 @@ export const queueWorker = new Worker(
       where: {
         id: Number(data?.clashItemId),
       },
-      data:{
-        count:{
-            increment:1
-        }
-      }
+      data: {
+        count: {
+          increment: 1,
+        },
+      },
     });
   },
   {
