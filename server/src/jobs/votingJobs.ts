@@ -17,8 +17,6 @@ export const queueWorker = new Worker(
   votingQueueName,
   async (job: Job) => {
     const data = job.data;
-    console.log("Processing job", data);
-    console.log(data?.clashItemId);
     await prisma.clashItem.update({
       where: {
         id: Number(data?.clashItemId),

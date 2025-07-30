@@ -18,7 +18,6 @@ export default function ForgetPass() {
   const [state, formAction] = useActionState(forgetAction, initialState);
 
   useEffect(() => {
-    console.log(state);
     if (state.status === 500) {
       toast.error(state.message);
     } else if (state.status === 200) {

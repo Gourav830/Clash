@@ -9,7 +9,6 @@ import ClashCard from '@/components/clash/clashCard';
 const Page = async  () => {
     const session:customSession|null = await getServerSession(authOptions)
     const clashes:Array<ClashType> | [] = await fetchClases(session?.user?.token!);
-    // console.log(clashes);
     return (
         <div className='container'>
             <NavBar />

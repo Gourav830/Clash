@@ -61,9 +61,6 @@ const EditClash = ({ token, clash,open,setOpen }: { token:string; clash: ClashTy
       formData.append("expires_at", date ? date.toISOString() : "");
       if (image) formData.append("image", image);
 
-      // Debugging: Log formData values
-      formData.forEach((value, key) => console.log(`${key}: ${value}`));
-
       const { data } = await axios.put(`${createClash}/${clash.id}`, formData, {
         headers: {
           Authorization: 

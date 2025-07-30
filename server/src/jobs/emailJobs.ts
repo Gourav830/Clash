@@ -17,7 +17,6 @@ export const emailQueue = new Queue(emailQueueName, {
 export const queueWorker = new Worker(emailQueueName, async (job:Job)=> {
         const data = job.data;
         await sendEmail(data.to,data.subject,data.body);
-        console.log("This is job data by bull mq" ,data);
 
 },{
     connection: redisConnectionOptions,

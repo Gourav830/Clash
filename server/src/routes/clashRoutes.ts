@@ -36,7 +36,6 @@ router.post("/", authMiddleware, async (req: Request, res: Response):Promise<voi
   try {
     const body = req.body;
     const payload = clashSchema.parse(body);
-    // console.log(payload);
     if (req.files?.image) {
       const image: UploadedFile = req.files?.image as UploadedFile;
 
