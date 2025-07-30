@@ -4,7 +4,8 @@ import Clashing from '../../../components/clash/clashing';
 import NavBar from '@/components/base/navBar';
 
 const Page = async ({params}:{params:any}) => {
-    const clash :ClashType|null= await fetchClase(params.id)
+      const { id } = await params
+    const clash :ClashType|null= await fetchClase(id)
 
     return (
         <div className='container'>

@@ -1,3 +1,4 @@
+
 Clash - Image Comparison & Anonymous Messaging Platform
 
 Clash is a web application designed to allow users to compare two photos based on likes, send anonymous messages, and manage user authentication securely. It leverages modern web technologies for high performance, scalability, and real-time interaction.
@@ -113,4 +114,5 @@ We welcome contributions! Please fork the repository and submit a pull request w
 This project is licensed under the MIT License.
 
 🚀 Built by Gourav Singla
+
 

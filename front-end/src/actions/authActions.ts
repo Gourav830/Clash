@@ -4,7 +4,6 @@ import {check_credential , forgetPassword, REGISTER_URL } from "@/lib/apiEndPoin
 import axios, { AxiosError } from "axios";
 import { resetPassword } from '../lib/apiEndPoint';
 export async function registerAction(prevState: any, formdata: FormData) {
-  console.log("the form data is ", formdata);
   try {
     const data = await axios.post(REGISTER_URL, {
       name: formdata.get("name"),
@@ -37,12 +36,10 @@ export async function registerAction(prevState: any, formdata: FormData) {
   }
 }
 export async function forgetAction(prevState: any, formData: FormData) {
-  console.log("the form data is ", formData);
   try {
     const data = await axios.post(forgetPassword, {
       email: formData.get("email"),
     });
-    console.log(data);
     return {
       status: 200,
       message: "Credentials matched loging you shortly!",
@@ -70,13 +67,11 @@ export async function forgetAction(prevState: any, formData: FormData) {
   }
 }
 export async function loginAction(prevState: any, formData: FormData) {
-  console.log("the form data is ", formData);
   try {
     const data = await axios.post(check_credential, {
       email: formData.get("email"),
       password: formData.get("password"),
     });
-    console.log(data);
     return {
       status: 200,
       message: "Credentials matched loging you shortly!",
@@ -109,7 +104,6 @@ export async function loginAction(prevState: any, formData: FormData) {
 
 
 export async function resetPasswordAction(prevState: any, formdata: FormData) {
-  console.log("the form data is ", formdata);
   try {
     const data = await axios.post(resetPassword, {
            email: formdata.get("email"),

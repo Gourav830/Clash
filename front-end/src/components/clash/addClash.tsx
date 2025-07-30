@@ -54,9 +54,6 @@ const AddClash = ({ user }: { user: Customuser }) => {
       formData.append("expires_at", date ? date.toISOString() : "");
       if (image) formData.append("image", image);
 
-      // Debugging: Log formData values
-      formData.forEach((value, key) => console.log(`${key}: ${value}`));
-
       const { data } = await axios.post(createClash, formData, {
         headers: {
           Authorization: user.token,
