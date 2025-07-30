@@ -1,11 +1,37 @@
 interface AuthUser {
-  id: number;
-  name: string;
-  email: string;
+    id: number;
+    name: string;
+    email: string;
 }
 
-declare module "express-serve-static-core" {
-  interface Request {
-    user?: AuthUser;
-  }
+interface VotingData {
+    clashId: number;
+    clashItemId: number;
+    userId?: number;
+}
+
+interface CommentData {
+    id: number;
+    comment: string;
+    userId?: number;
+}
+
+interface EmailJobData {
+    to: string;
+    subject: string;
+    body: string;
+}
+
+interface JWTPayload {
+    id: number;
+    name: string;
+    email: string;
+    iat?: number;
+    exp?: number;
+}
+
+declare namespace Express {
+    interface Request {
+        user?: AuthUser;
+    }
 }

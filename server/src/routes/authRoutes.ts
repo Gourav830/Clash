@@ -16,7 +16,7 @@ const router = Router();
 router.post(
   "/register",
   authLimiter,
-  async (req: any, res: any): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const body = req.body;
       const payload = registerSchema.parse(body);
@@ -82,7 +82,7 @@ router.post(
 router.post(
   "/login",
   authLimiter,
-  async (req: any, res: any): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const body = req.body;
       const payload = loginSchema.parse(body);
@@ -133,7 +133,7 @@ router.post(
 router.post(
   "/logincheck",
   authLimiter,
-  async (req: any, res: any): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const body = req.body;
       const payload = loginSchema.parse(body);
@@ -168,7 +168,7 @@ router.post(
 router.get(
   "/user",
   authMiddleware,
-  async (req: any, res: any): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     const user = req.user;
     res.json({ data: user });
     return;

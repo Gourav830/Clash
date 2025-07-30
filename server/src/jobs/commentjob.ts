@@ -15,8 +15,8 @@ export const commentQueue = new Queue(commentQueueName, {
 
 export const queueWorker = new Worker(
   commentQueueName,
-  async (job: Job) => {
-    const data = job.data;
+  async (job: Job<CommentData>) => {
+    const data: CommentData = job.data;
     await prisma.clashComments.create({
       data: {
         comment: data?.comment,

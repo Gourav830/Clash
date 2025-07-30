@@ -15,8 +15,8 @@ export const emailQueue = new Queue(emailQueueName, {
 
 export const queueWorker = new Worker(
   emailQueueName,
-  async (job: Job) => {
-    const data = job.data;
+  async (job: Job<EmailJobData>) => {
+    const data: EmailJobData = job.data;
     await sendEmail(data.to, data.subject, data.body);
   },
   {

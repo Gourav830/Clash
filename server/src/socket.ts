@@ -2,18 +2,6 @@ import { Server } from "socket.io";
 import { votingQueue, votingQueueName } from "./jobs/votingJobs.js";
 import { commentQueue, commentQueueName } from "./jobs/commentjob.js";
 
-interface VotingData {
-  clashId: number;
-  clashItemId: number;
-  userId?: number;
-}
-
-interface CommentData {
-  id: number;
-  comment: string;
-  userId?: number;
-}
-
 export function setupSocket(io: Server) {
   io.on("connection", (socket) => {
     socket.on("disconnect", () => {
