@@ -8,13 +8,13 @@ const PORT = process.env.PORT || 7000;
 import * as path from "path";
 import { fileURLToPath } from "url";
 import { Server } from "socket.io";
-// 
+//
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const server = createServer(app);
 // Only create Socket.io in development or when not on Vercel
 let io;
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
     io = new Server(server, {
         cors: {
             origin: process.env.CLIENT_APP_URL,
@@ -30,13 +30,13 @@ export { io };
 // *middleware
 app.use(cors({
     origin: [
-        'https://clash-singla.vercel.app',
-        'http://localhost:3000',
-        process.env.CLIENT_APP_URL || 'http://localhost:3000'
+        "https://clash-singla.vercel.app",
+        "http://localhost:3000",
+        process.env.CLIENT_APP_URL || "http://localhost:3000",
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(helmet());
 app.use(ExpressFileUpoad({
@@ -50,7 +50,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
 // * Set Queue - only in development
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
     import("./jobs/index.js");
 }
 // Health check endpoint
@@ -59,7 +59,7 @@ app.get("/", (req, res) => {
         message: "Clash Backend API is running!",
         status: "success",
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || "development",
     });
 });
 // *Routes
@@ -70,7 +70,7 @@ app.all("*", (req, res) => {
     res.status(404).json({
         message: "Route not found",
         path: req.originalUrl,
-        method: req.method
+        method: req.method,
     });
 });
 // For local development
