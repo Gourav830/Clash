@@ -23,17 +23,20 @@ if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
         origin: process.env.CLIENT_APP_URL,
       },
     });
-    
+
     // Import and setup socket only if io is created
-    import("./socket.js").then(({ setupSocket }) => {
-      if (io) setupSocket(io);
-    }).catch(err => {
-      console.warn("Socket setup failed:", err.message);
-    });
+    import("./socket.js")
+      .then(({ setupSocket }) => {
+        if (io) setupSocket(io);
+      })
+      .catch((err) => {
+        console.warn("Socket setup failed:", err.message);
+      });
   } catch (error) {
     console.warn("Socket.io not available in serverless environment");
   }
-}export { io };
+}
+export { io };
 
 // *middleware
 app.use(
@@ -66,7 +69,7 @@ app.set("views", path.resolve(__dirname, "./views"));
 // * Set Queue - only in development (disable in serverless)
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   try {
-    import("./jobs/index.js").catch(err => {
+    import("./jobs/index.js").catch((err) => {
       console.warn("Failed to load background jobs:", err.message);
     });
   } catch (error) {
