@@ -9,6 +9,7 @@
     "server": "nodemon dist/index.js",
     "watch": "tsc -w",
     "build": "tsc && npm run copy-files",
+    "vercel-build": "npm run build",
     "dev": "concurrently  \"npm run watch\"  \"npm run server\" \"npm run watch-views\"",
     "copy-files": "copyfiles -u 1 \"src/views/**/*\" dist/",
     "watch-views": "nodemon --watch src/views -e ejs -x \"npm run copy-files\""

@@ -14,17 +14,24 @@ const app = express();
 const server = createServer(app);
 // Only create Socket.io in development or when not on Vercel
 let io;
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
-    io = new Server(server, {
-        cors: {
-            origin: process.env.CLIENT_APP_URL,
-        },
-    });
-    // Import and setup socket only if io is created
-    import("./socket.js").then(({ setupSocket }) => {
-        if (io)
-            setupSocket(io);
-    });
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+    try {
+        io = new Server(server, {
+            cors: {
+                origin: process.env.CLIENT_APP_URL,
+            },
+        });
+        // Import and setup socket only if io is created
+        import("./socket.js").then(({ setupSocket }) => {
+            if (io)
+                setupSocket(io);
+        }).catch(err => {
+            console.warn("Socket setup failed:", err.message);
+        });
+    }
+    catch (error) {
+        console.warn("Socket.io not available in serverless environment");
+    }
 }
 export { io };
 // *middleware
@@ -49,9 +56,16 @@ app.use(express.static("public"));
 // * Set View engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
-// * Set Queue - only in development
-if (process.env.NODE_ENV !== "production") {
-    import("./jobs/index.js");
+// * Set Queue - only in development (disable in serverless)
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+    try {
+        import("./jobs/index.js").catch(err => {
+            console.warn("Failed to load background jobs:", err.message);
+        });
+    }
+    catch (error) {
+        console.warn("Background jobs not available in serverless environment");
+    }
 }
 // Health check endpoint
 app.get("/", (req, res) => {
