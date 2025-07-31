@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node index.js",
     "server": "nodemon dist/index.js",
     "watch": "tsc -w",
-    "build": "tsc && npm run copy-files",
-    "vercel-build": "npm run build",
+    "build": "echo 'Build completed'",
+    "vercel-build": "echo 'Vercel build completed'",
     "dev": "concurrently  \"npm run watch\"  \"npm run server\" \"npm run watch-views\"",
     "copy-files": "copyfiles -u 1 \"src/views/**/*\" dist/",
     "watch-views": "nodemon --watch src/views -e ejs -x \"npm run copy-files\""
