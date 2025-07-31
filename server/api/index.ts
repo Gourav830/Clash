@@ -1,37 +1,16 @@
-import express, { Application, Response, Request } from "express";
+import express, { Application, Response, Request, NextFunction } from "express";
 import "dotenv/config";
 import cors from "cors";
 import helmet from "helmet";
 import ExpressFileUpoad from "express-fileupload";
-import { createServer, Server as HttpServer } from "http";
-const PORT = process.env.PORT || 7000;
 import * as path from "path";
 import { fileURLToPath } from "url";
-import { Server } from "socket.io";
-//
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Application = express();
-const server: HttpServer = createServer(app);
 
-// Only create Socket.io in development or when not on Vercel
-let io: Server | undefined;
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
-  io = new Server(server, {
-    cors: {
-      origin: process.env.CLIENT_APP_URL,
-    },
-  });
-
-  // Import and setup socket only if io is created
-  import("./socket.js").then(({ setupSocket }) => {
-    if (io) setupSocket(io);
-  });
-}
-
-export { io };
-
-// *middleware
+// CORS configuration for Vercel
 app.use(
   cors({
     origin: [
@@ -44,6 +23,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(helmet());
 app.use(
   ExpressFileUpoad({
@@ -55,14 +35,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
-// * Set View engine
+// Set View engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
-
-// * Set Queue - only in development
-if (process.env.NODE_ENV !== "production") {
-  import("./jobs/index.js");
-}
 
 // Health check endpoint
 app.get("/", (req: Request, res: Response) => {
@@ -70,12 +45,11 @@ app.get("/", (req: Request, res: Response) => {
     message: "Clash Backend API is running!",
     status: "success",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development",
   });
 });
 
-// *Routes
-import routes from "./routes/index.js";
+// Routes
+import routes from "../src/routes/index.js";
 app.use("/", routes);
 
 // 404 handler
@@ -87,10 +61,16 @@ app.all("*", (req: Request, res: Response) => {
   });
 });
 
-// For local development
-if (!process.env.VERCEL) {
-  server.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
-}
+// Error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Something went wrong!",
+    error:
+      process.env.NODE_ENV === "development"
+        ? err.message
+        : "Internal server error",
+  });
+});
 
-// Export for Vercel
 export default app;
