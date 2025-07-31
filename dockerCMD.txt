@@ -1,0 +1,21 @@
+ docker run -d --name redis-server -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+
+redis-cli --tls -u redis://default:Ac2kAAIjcDFlZTE1M2E0YTQ0OTM0YWVmYjNhZmUwMjhjYmE0ZGM0NHAxMA@promoted-guinea-52644.upstash.io:6379
+
+rediss://default:Ac2kAAIjcDFlZTE1M2E0YTQ0OTM0YWVmYjNhZmUwMjhjYmE0ZGM0NHAxMA@promoted-guinea-52644.upstash.io:6379
+https://promoted-guinea-52644.upstash.io
+
+
+
+
+
+
+ {
+
+  "email": "reyecog994@cashbn.com",
+  "password": "qwerty"
+
+} 
+
+psql 'postgresql://neondb_owner:npg_P76ktxVaKTIh@ep-wandering-glade-a1dpkfat-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'psql -h 
+pg.neon.tech

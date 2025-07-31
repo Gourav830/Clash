@@ -1,4 +1,27 @@
+# Node.js dependencies
+node_modules/
+server/node_modules/
+frontend/node_modules/
 
-node_modules
-server/node_modules
-frontend/node_modules
+# Build outputs
+server/dist/
+frontend/dist/
+
+# Environment variables
+.env
+server/.env
+server/env/
+frontend/.env
+frontend/env/
+
+# Prisma-related files
+server/prisma/.env
+server/prisma/.env.development
+server/prisma/.env.production
+server/prisma/.env.test
+server/prisma/migrations/
+server/prisma/schema.prisma
+server/prisma/client/
+
+# Miscellaneous
+doclerCMD.txt
