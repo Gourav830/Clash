@@ -9,7 +9,7 @@ import {
 import { clashSchema } from "../validations/clashValidation.js";
 import { FileArray, UploadedFile } from "express-fileupload";
 import prisma from "../config/database.js";
-import authMiddleware from "../middleware/authMiddleWare.js";
+import authMiddleware from "../middleware/AuthMiddleWare.js";
 // import { uploadedFile } from "../helper";
 // import { REGISTER_URL } from '../../../front-end/src/lib/apiEndPoint';
 

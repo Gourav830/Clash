@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<%- include("../partials/head") %>
 <body>
-    <h1>this is ejs file</h1>
-    <h2>most welcome to see this piece of art hehe</h2>
-    <h1>visit again for sure will be build soon </h1>
+    <div class="container">
+        <p>Hello <strong><%= payload.name %></strong></p>
+        <p>We are happy to on board you. We can't wait to see what clash you will perorm.</p>
+        <p>If you have any query then let us know. we are here to help you</p>
+        <%- include('../partials/footer'); %>
+    </div>
 </body>
 </html>

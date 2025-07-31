@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuid4 } from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/emailJobs.js";
 import jwt from "jsonwebtoken";
-import authMiddleware from "../middleware/authMiddleWare.js";
+import authMiddleware from "../middleware/AuthMiddleWare.js";
 import { authLimiter } from "../config/rateLinit.js";
 
 const router = Router();
